@@ -1,0 +1,22 @@
+{
+  "name": "shiny-journey",
+  "version": "1.0.0",
+  "description": "telegram bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoqvan/shiny-journey.git"
+  },
+  "author": "xiaoqvan",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/xiaoqvan/shiny-journey/issues"
+  },
+  "homepage": "https://github.com/xiaoqvan/shiny-journey#readme",
+  "dependencies": {
+    "telegram": "^2.26.8"
+  }
+}
