@@ -145,9 +145,9 @@ export function dc(client, event) {
                     <img src="${avatarBase64}" alt="avatar">
                 </div>
                 <div class="info">
-                    <h1 class="name">名称 <span>${userName}</span></h1>
+                    <h1 class="name">${userName}</h1>
                     <p class="user">用户名：<span>@${userFullName}</span></p>
-                    <p class="id">ID:${ID} - DC:<span>${dcId}</span></p>
+                    <p class="id">Id:${ID} - DC:<span>${dcId}</span></p>
                 </div>
             </div>
         </div>

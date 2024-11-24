@@ -108,6 +108,7 @@ const get163music = async (id, level) => {
       album: songDetails.al.name,
       level: songLevel,
       size: size,
+      time: songDetails.dt,
       url: url,
     };
 
