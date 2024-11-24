@@ -1,6 +1,6 @@
 {
   "name": "shiny-journey",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "telegram bot",
   "type": "module",
   "main": "app.js",
