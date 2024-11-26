@@ -130,3 +130,4 @@ dist
 .pnp.*
 *.yaml
 /caching
+plugins/kfc.js
