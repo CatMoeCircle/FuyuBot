@@ -15,7 +15,8 @@ export async function Video(client, event) {
     }
     const result = await DouYin(url);
     try {
-      const message = `${result.title} \n\nBy <a href="https://www.douyin.com/user/${result.author.uid}">${result.author.name}</a> `;
+      const title = result.title(/(?<!\s)#/, " #", caption);
+      const message = `${title} \n\nBy <a href="https://www.douyin.com/user/${result.author.uid}">${result.author.name}</a> `;
       await client.sendMessage(event.chatId, {
         file: result.video_url,
         message,
