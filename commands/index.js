@@ -2,11 +2,15 @@ import { TelegramClient } from "telegram"; // 确保导入 TelegramClient
 import { Start } from "./start.js";
 import { dc } from "./dc.js";
 import { Music } from "./music.js";
+import { Video } from "./video.js";
+import { help } from "./help.js";
 
 const commandHandlers = {
   "/start": Start,
   "/dc": dc,
   "/music": Music,
+  "/video": Video,
+  "/help": help,
 };
 
 export function registerCommands(client) {

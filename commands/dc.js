@@ -133,7 +133,7 @@ export function dc(client, event) {
 <body>
     <div class="main">
         <div class="background">
-            <img src="https://998860.xyz/tp/ys" alt="">
+            <img src="https://api.vvhan.com/api/wallpaper/acg" alt="">
         </div>
         <div class="title">
             <h1>个人信息</h1>
