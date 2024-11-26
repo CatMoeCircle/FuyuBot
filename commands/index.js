@@ -18,6 +18,9 @@ export function registerCommands(client) {
     );
     if (handler) {
       commandHandlers[handler](client, event);
+    } else {
+      // 将未处理的消息传递给插件
+      global.handlePluginMessage(client, event);
     }
   }, new TelegramClient.events.NewMessage({}));
 }

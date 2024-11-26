@@ -1,3 +1,4 @@
+import "./config.js"; // 确保在其他导入之前加载配置
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { registerCommands } from "../commands/index.js";
@@ -36,4 +37,11 @@ export async function start() {
   client.addEventHandler((event) => {
     logMessage(event);
   }, new TelegramClient.events.NewMessage({}));
+
+  // 使用插件
+  Object.values(global.plugins).forEach((plugin) => {
+    if (typeof plugin === "function") {
+      plugin(client);
+    }
+  });
 }
