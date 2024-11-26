@@ -35,7 +35,7 @@ export async function start() {
 
   // 添加事件处理器来打印所有接收到的消息
   client.addEventHandler((event) => {
-    logMessage(event);
+    logMessage(client, event);
   }, new TelegramClient.events.NewMessage({}));
 
   // 使用插件
