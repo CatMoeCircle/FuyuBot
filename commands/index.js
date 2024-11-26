@@ -1,12 +1,12 @@
 import { TelegramClient } from "telegram"; // 确保导入 TelegramClient
-import { handleStartCommand } from "./start.js";
+import { Start } from "./start.js";
 import { dc } from "./dc.js";
-import { handleMusicCommand } from "./music.js";
+import { Music } from "./music.js";
 
 const commandHandlers = {
-  "/start": handleStartCommand,
+  "/start": Start,
   "/dc": dc,
-  "/music": handleMusicCommand,
+  "/music": Music,
 };
 
 export function registerCommands(client) {

@@ -13,7 +13,7 @@ const ensureDirectoryExists = (dir) => {
   }
 };
 
-export function handleMusicCommand(client, event) {
+export function Music(client, event) {
   const message = event.message;
   const command = message.message.split(" ");
 
