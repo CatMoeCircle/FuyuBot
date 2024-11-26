@@ -19,8 +19,24 @@ const hashHexDigest = (text) => hexDigest(Array.from(hashDigest(text)));
 const readCookie = () => {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
   const cookieFile = path.join(scriptDir, "../../config/163cookie.yaml");
+
+  if (!fs.existsSync(cookieFile)) {
+    const defaultCookies = {
+      MUSIC_U: "",
+      os: "pc",
+      appver: "3.1.0.203271",
+    };
+    const yamlStr = yaml.dump(defaultCookies);
+    fs.writeFileSync(cookieFile, yamlStr, "utf8");
+  }
+
   const fileContents = fs.readFileSync(cookieFile, "utf8");
   const cookies = yaml.load(fileContents);
+  if (!cookies.MUSIC_U) {
+    logger.warn(
+      "未填写网易云音乐的 cookie 信息到 `163cookie.yaml` 中的 MUSIC_U 字段。"
+    );
+  }
   return cookies;
 };
 
@@ -38,6 +54,7 @@ const post = async (url, params, cookie) => {
   const response = await axios.post(url, `params=${params}`, {
     headers,
   });
+  logger.debug(`POST ${url} - ${JSON.stringify(response.data)}`);
   return response.data;
 };
 
@@ -112,6 +129,7 @@ const get163music = async (id, level) => {
       url: url,
     };
 
+    logger.debug(`获取歌曲信息成功：${JSON.stringify(result)}`);
     return result;
   } catch (error) {
     console.error(error);

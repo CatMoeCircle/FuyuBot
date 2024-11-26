@@ -3,7 +3,6 @@ import fetch from "node-fetch";
 import fs from "fs";
 import { join, extname } from "path";
 import { Api } from "telegram";
-import { log } from "console";
 
 const downloadDir = "./caching/downloads";
 
@@ -37,7 +36,7 @@ export function handleMusicCommand(client, event) {
       })
       .then(async (sentMessage) => {
         if (!sentMessage || !sentMessage.id) {
-          console.error("发送消息失败，无法获取有效的消息ID");
+          logger.error("发送消息失败，无法获取有效的消息ID");
           return;
         }
 
@@ -112,7 +111,7 @@ export function handleMusicCommand(client, event) {
                 fs.unlinkSync(filePath);
                 fs.unlinkSync(coverPath);
               } catch (uploadError) {
-                console.error("无法上传歌曲文件:", uploadError);
+                logger.error(`无法上传歌曲文件: ${uploadError}`);
                 await client.invoke(
                   new Api.messages.EditMessage({
                     peer: message.chatId,
@@ -122,7 +121,7 @@ export function handleMusicCommand(client, event) {
                 );
               }
             } catch (coverDownloadError) {
-              console.error("无法下载封面图片:", coverDownloadError);
+              logger.error(`无法下载封面图片: ${coverDownloadError}`);
               await client.invoke(
                 new Api.messages.EditMessage({
                   peer: message.chatId,
@@ -132,7 +131,7 @@ export function handleMusicCommand(client, event) {
               );
             }
           } catch (songDownloadError) {
-            console.error("无法下载歌曲文件:", songDownloadError);
+            logger.error(`无法下载歌曲文件: ${songDownloadError}`);
             await client.invoke(
               new Api.messages.EditMessage({
                 peer: message.chatId,
@@ -142,7 +141,7 @@ export function handleMusicCommand(client, event) {
             );
           }
         } catch (getSongInfoError) {
-          console.error("无法获取歌曲信息:", getSongInfoError);
+          logger.error(`无法获取歌曲信息: ${getSongInfoError}`);
           await client.invoke(
             new Api.messages.EditMessage({
               peer: message.chatId,

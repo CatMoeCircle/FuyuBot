@@ -1,10 +1,10 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
+import { registerCommands } from "../commands/index.js";
+import { logMessage } from "./utils/message.js";
 import dotenv from "dotenv";
 import fs from "fs";
 import yaml from "js-yaml";
-import { registerCommands } from "../commands/index.js";
-import { logMessage } from "./utils/Logging.js"; // 引入logMessage
 
 dotenv.config();
 
@@ -16,16 +16,15 @@ const cookie = yaml.load(fs.readFileSync("config/cookie.yaml", "utf-8"));
 const botconfig = yaml.load(fs.readFileSync("config/bot.yaml", "utf-8"));
 const stringSession = new StringSession(cookie.stringSession || "");
 
-(async () => {
-  console.log("Loading interactive example...");
+export async function start() {
   const client = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
   });
   await client.start({
     botAuthToken: botToken,
-    onError: (err) => console.log(err),
+    onError: (err) => logger.error(`${err}`),
   });
-  console.log("You should now be connected.");
+  logger.info("You should now be connected.");
   client.sendMessage(botconfig.creator_id, { message: "bot已经上线" });
 
   cookie.stringSession = client.session.save();
@@ -37,4 +36,4 @@ const stringSession = new StringSession(cookie.stringSession || "");
   client.addEventHandler((event) => {
     logMessage(event);
   }, new TelegramClient.events.NewMessage({}));
-})();
+}

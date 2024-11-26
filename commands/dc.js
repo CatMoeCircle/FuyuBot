@@ -1,5 +1,4 @@
 import { pimg, deleteImage } from "../core/api/puppeteer.js";
-import fs from "fs";
 
 export function dc(client, event) {
   const message = event.message;
@@ -16,11 +15,11 @@ export function dc(client, event) {
             const photo = await client.downloadProfilePhoto(user);
             avatarBase64 = `data:image/jpeg;base64,${photo.toString("base64")}`;
           } catch (downloadError) {
-            console.error("无法下载头像:", downloadError);
+            logger.error(`无法下载头像: ${downloadError}`);
             avatarBase64 = null;
           }
         } else {
-          console.log("用户没有头像");
+          logger.info("用户没有头像");
           avatarBase64 = null;
         }
 
@@ -170,7 +169,7 @@ export function dc(client, event) {
           // 删除图片
           await deleteImage(screenshotPath);
         } catch (error) {
-          console.error("无法生成截图:", error);
+          logger.error(`无法生成截图: ${error}`);
 
           // 发送错误信息给用户
           client.sendMessage(message.chatId, {
@@ -179,7 +178,7 @@ export function dc(client, event) {
         }
       })
       .catch((err) => {
-        console.error("无法获取用户信息:", err);
+        logger.error(`无法获取用户信息: ${err}`);
 
         // 发送错误信息给用户
         client.sendMessage(message.chatId, {

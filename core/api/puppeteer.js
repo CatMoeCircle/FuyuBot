@@ -11,12 +11,13 @@ const ensureDirectoryExists = async (dir) => {
   try {
     await mkdir(dir, { recursive: true });
   } catch (err) {
-    console.error(`Error ensuring directory exists: ${err.message}`);
+    logger.error(`Error ensuring directory exists: ${err.message}`);
   }
 };
 
 const pimg = async (htmlContent, viewport = { width: 800, height: 600 }) => {
   let browser;
+  const startTime = Date.now(); // 开始时间
   try {
     // 初始化浏览器
     browser = await puppeteer.launch({
@@ -44,9 +45,13 @@ const pimg = async (htmlContent, viewport = { width: 800, height: 600 }) => {
     await page.screenshot({ path: outputPath });
     await page.close();
 
+    const endTime = Date.now(); // 结束时间
+    const duration = (endTime - startTime) / 1000; // 用时（秒）
+    logger.debug(`Screenshot generated in ${duration} seconds`);
+
     return outputPath;
   } catch (error) {
-    console.error("Error generating screenshot:", error);
+    logger.error(`Error generating screenshot: ${error}`);
     throw error;
   } finally {
     if (browser) {
@@ -60,7 +65,7 @@ const deleteImage = async (filePath) => {
   try {
     await unlink(filePath);
   } catch (error) {
-    console.error(`Error deleting file: ${error.message}`);
+    logger.error(`Error deleting file: ${error.message}`);
     throw error;
   }
 };
