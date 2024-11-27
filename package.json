@@ -4,9 +4,9 @@
   "description": "telegram bot",
   "type": "module",
   "main": "app.js",
-  "scripts": {
-    "test": "node app.js"
-  },
+"scripts": {
+  "test": "node app.js"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xiaoqvan/shiny-journey-bot.git"

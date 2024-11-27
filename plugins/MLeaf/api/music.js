@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { URL, fileURLToPath } from "url";
 import yaml from "js-yaml";
+import logger from "./logger.js";
 
 const hexDigest = (data) =>
   data.map((d) => d.toString(16).padStart(2, "0")).join("");
@@ -15,7 +16,7 @@ const hashHexDigest = (text) => hexDigest(Array.from(hashDigest(text)));
 
 const readCookie = () => {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-  const cookieFile = path.join(scriptDir, "../../config/163cookie.yaml");
+  const cookieFile = path.join(scriptDir, "./config/163cookie.yaml");
 
   if (!fs.existsSync(cookieFile)) {
     const defaultCookies = {
@@ -103,6 +104,38 @@ const MusicInfo = async (id) => {
   });
   return response.data;
 };
+// 搜索歌曲
+const search = async (keyword, cookies) => {
+  const url = "https://interface.music.163.com/eapi/search/song/list/page";
+  const AES_KEY = Buffer.from("e82ckenh8dichen8");
+  const config = {
+    osver: "",
+    deviceId: "Telegram",
+    requestId: (Math.floor(Math.random() * 10000000) + 20000000).toString(),
+  };
+
+  const payload = {
+    keyword: keyword,
+    scene: "NORMAL",
+    needCorrect: "true",
+    limit: 10,
+    offset: 0,
+    e_r: false,
+    header: JSON.stringify(config),
+  };
+
+  const url2 = new URL(url).pathname.replace("/eapi/", "/api/");
+  const digest = hashHexDigest(
+    `nobody${url2}use${JSON.stringify(payload)}md5forencrypt`
+  );
+  const params = `${url2}-36cd479b6b5-${JSON.stringify(
+    payload
+  )}-36cd479b6b5-${digest}`;
+  const padder = crypto.createCipheriv("aes-128-ecb", AES_KEY, null);
+  const enc = Buffer.concat([padder.update(params, "utf8"), padder.final()]);
+  const response = await post(url, hexDigest(Array.from(enc)), cookies);
+  return response;
+};
 
 const get163music = async (id, level) => {
   const cookies = readCookie();
@@ -131,5 +164,9 @@ const get163music = async (id, level) => {
     throw error;
   }
 };
-
-export default get163music;
+const search163music = async (keyword) => {
+  const cookies = readCookie();
+  const result = await search(keyword, cookies);
+  return result.date;
+};
+export default { get163music, search163music };

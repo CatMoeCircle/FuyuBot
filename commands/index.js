@@ -1,14 +1,12 @@
 import { TelegramClient } from "telegram";
 import { Start } from "./start.js";
 import { dc } from "./dc.js";
-import { Music } from "./music.js";
 import { Video } from "./video.js";
 import { help } from "./help.js";
 
 const commandHandlers = {
   "/start": Start,
   "/dc": dc,
-  "/music": Music,
   "/video": Video,
   "/help": help,
 };

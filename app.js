@@ -1,17 +1,7 @@
-import pino from "pino";
-import pretty from "pino-pretty";
-import { loadConfig } from "./core/config.js";
+import loadConfig from "./core/config.js";
 import start from "./core/bot.js";
-
-const logger = pino(
-  {
-    level: "debug", // 日志级别
-  },
-  pretty({
-    colorize: true,
-    translateTime: "yyyy-mm-dd HH:MM:ss",
-  })
-);
+import "./WebUI/web.js";
+import { logger } from "./core/log.js";
 
 async function init() {
   try {
