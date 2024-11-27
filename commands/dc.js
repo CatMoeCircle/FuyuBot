@@ -29,7 +29,6 @@ export function dc(client, event) {
         const userFullName = user.firstName || "未知姓名";
         const viewport = { width: 350, height: 240, deviceScaleFactor: 2 };
 
-        // 生成HTML内容
         const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
@@ -157,21 +156,16 @@ export function dc(client, event) {
         `;
 
         try {
-          // 生成截图
           const screenshotPath = await pimg(htmlContent, viewport);
 
-          // 发送信息给用户
           await client.sendMessage(message.chatId, {
-            // 添加发送图片的功能
-            file: screenshotPath, // 假设client支持发送文件
+            file: screenshotPath,
           });
 
-          // 删除图片
           await deleteImage(screenshotPath);
         } catch (error) {
           logger.error(`无法生成截图: ${error}`);
 
-          // 发送错误信息给用户
           client.sendMessage(message.chatId, {
             message: "无法生成截图，请稍后再试。",
           });
@@ -180,7 +174,6 @@ export function dc(client, event) {
       .catch((err) => {
         logger.error(`无法获取用户信息: ${err}`);
 
-        // 发送错误信息给用户
         client.sendMessage(message.chatId, {
           message: "无法获取你的DC服务器信息，请稍后再试。",
         });

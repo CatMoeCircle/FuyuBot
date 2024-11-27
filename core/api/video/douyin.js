@@ -1,7 +1,6 @@
 // 引入必要的库
 import axios from "axios";
 import UserAgent from "user-agents";
-import { log } from "util";
 
 const userAgent = new UserAgent();
 // 解析分享链接中的视频ID
@@ -17,12 +16,11 @@ async function parseVideoId(shareLink) {
         maxRedirects: 0,
         validateStatus: null,
         headers: {
-          "User-Agent": userAgent.toString(), // 添加User-Agent头
+          "User-Agent": userAgent.toString(),
         },
       });
       const redirectedUrl = response.headers.location;
       if (redirectedUrl) {
-        // 检查重定向URL是否包含视频ID、笔记ID或幻灯片ID
         if (redirectedUrl.includes("/video/")) {
           videoId = redirectedUrl.split("/video/")[1].split("/")[0];
         } else if (redirectedUrl.includes("/note/")) {
@@ -46,7 +44,7 @@ async function getVideoInfo(videoId) {
     const videoInfoUrl = `https://www.iesdouyin.com/share/video/${videoId}/`;
     const response = await axios.get(videoInfoUrl, {
       headers: {
-        "User-Agent": userAgent.toString(), // 添加User-Agent头
+        "User-Agent": userAgent.toString(),
       },
     });
     const htmlContent = response.data;
@@ -58,7 +56,6 @@ async function getVideoInfo(videoId) {
       const loaderData = jsonData.loaderData;
       let originalVideoInfo;
 
-      // 检查视频、笔记或幻灯片信息
       if ("video_(id)/page" in loaderData) {
         originalVideoInfo = loaderData["video_(id)/page"].videoInfoRes;
       } else if ("note_(id)/page" in loaderData) {
@@ -75,7 +72,6 @@ async function getVideoInfo(videoId) {
 
       const data = originalVideoInfo.item_list[0];
 
-      // 获取图集图片地址
       const images = [];
       if (data.images && Array.isArray(data.images)) {
         data.images.forEach((img) => {
@@ -89,7 +85,6 @@ async function getVideoInfo(videoId) {
         });
       }
 
-      // 获取视频播放地址
       let videoUrl = "";
       if (data.video && data.video.play_addr && data.video.play_addr.url_list) {
         videoUrl = data.video.play_addr.url_list[0].replace("playwm", "play");
@@ -100,7 +95,6 @@ async function getVideoInfo(videoId) {
         videoUrl = "";
       }
 
-      // 获取重定向后的mp4视频地址
       let videoMp4Url = "";
       if (videoUrl) {
         videoMp4Url = await getFinalVideoUrl(videoUrl);
@@ -131,7 +125,7 @@ async function getFinalVideoUrl(videoUrl) {
       maxRedirects: 0,
       validateStatus: null,
       headers: {
-        "User-Agent": userAgent.toString(), // 添加User-Agent头
+        "User-Agent": userAgent.toString(),
       },
     });
     return response.headers.location || videoUrl;
@@ -141,7 +135,6 @@ async function getFinalVideoUrl(videoUrl) {
   }
 }
 
-// 示例使用
 (async () => {})();
 
 const DouYin = async (url) => {

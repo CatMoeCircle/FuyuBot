@@ -3,14 +3,13 @@ import pino from "pino";
 import pretty from "pino-pretty";
 import { start } from "./core/bot.js";
 
-// 创建一个 pino logger 实例
 const logger = pino(
   {
-    level: "debug", // 设置日志级别，'debug' 输出所有日志级别的信息
+    level: "debug", // 日志级别
   },
   pretty({
-    colorize: true, // 彩色输出
-    translateTime: "yyyy-mm-dd HH:MM:ss", // 时间格式化
+    colorize: true,
+    translateTime: "yyyy-mm-dd HH:MM:ss",
   })
 );
 

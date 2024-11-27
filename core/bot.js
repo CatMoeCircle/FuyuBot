@@ -1,4 +1,4 @@
-import "./config.js"; // 确保在其他导入之前加载配置
+import "./config.js";
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { registerCommands } from "../commands/index.js";
@@ -46,12 +46,11 @@ export async function start() {
 
   registerCommands(client);
 
-  // 添加事件处理器来打印所有接收到的消息
   client.addEventHandler((event) => {
     logMessage(client, event);
   }, new TelegramClient.events.NewMessage({}));
 
-  // 使用插件
+  // 插件
   Object.values(global.plugins).forEach((plugin) => {
     if (typeof plugin === "function") {
       plugin(client);

@@ -6,7 +6,6 @@ import { Api } from "telegram";
 
 const downloadDir = "./caching/downloads";
 
-// 确保目录存在
 const ensureDirectoryExists = (dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -29,7 +28,6 @@ export function Music(client, event) {
       return;
     }
 
-    // 发送 "正在获取" 消息
     client
       .sendMessage(message.chatId, {
         message: "正在获取，请稍等...",
@@ -45,10 +43,8 @@ export function Music(client, event) {
           const musicTitle = songInfo.name;
           const artistName = songInfo.artists;
 
-          // 确保下载目录存在
           ensureDirectoryExists(downloadDir);
 
-          // 下载歌曲文件
           try {
             const response = await fetch(songInfo.url);
             const arrayBuffer = await response.arrayBuffer();
@@ -65,7 +61,6 @@ export function Music(client, event) {
 
             fs.writeFileSync(filePath, buffer);
 
-            // 下载封面图片
             try {
               const coverResponse = await fetch(songInfo.picUrl);
               const coverArrayBuffer = await coverResponse.arrayBuffer();
@@ -76,16 +71,14 @@ export function Music(client, event) {
               );
               fs.writeFileSync(coverPath, coverBuffer);
 
-              // 修改消息为 "正在上传"
               await client.invoke(
                 new Api.messages.EditMessage({
-                  peer: message.chatId, // 确保这是正确的聊天ID
-                  id: sentMessage.id, // 确保这是有效的消息ID
+                  peer: message.chatId,
+                  id: sentMessage.id,
                   message: "正在上传，请稍等...",
                 })
               );
 
-              // 发送音乐文件并附带封面图片
               try {
                 await client.sendMessage(message.chatId, {
                   file: filePath,
@@ -99,7 +92,6 @@ export function Music(client, event) {
                   ],
                 });
 
-                // 删除提示消息
                 await client.invoke(
                   new Api.messages.DeleteMessages({
                     id: [sentMessage.id],
@@ -107,7 +99,6 @@ export function Music(client, event) {
                   })
                 );
 
-                // 删除临时文件
                 fs.unlinkSync(filePath);
                 fs.unlinkSync(coverPath);
               } catch (uploadError) {

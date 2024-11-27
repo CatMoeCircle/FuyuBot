@@ -1,6 +1,6 @@
 {
   "name": "shiny-journey",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "telegram bot",
   "type": "module",
   "main": "app.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xiaoqvan/shiny-journey.git"
+    "url": "git+https://github.com/xiaoqvan/shiny-journey-bot.git"
   },
   "author": "xiaoqvan",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/xiaoqvan/shiny-journey/issues"
+    "url": "https://github.com/xiaoqvan/shiny-journey-bot/issues"
   },
-  "homepage": "https://github.com/xiaoqvan/shiny-journey#readme",
+  "homepage": "https://github.com/xiaoqvan/shiny-journey-bot#readme",
   "dependencies": {
     "axios": "^1.7.7",
     "chokidar": "^4.0.1",

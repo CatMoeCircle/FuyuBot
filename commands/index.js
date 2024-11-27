@@ -1,4 +1,4 @@
-import { TelegramClient } from "telegram"; // 确保导入 TelegramClient
+import { TelegramClient } from "telegram";
 import { Start } from "./start.js";
 import { dc } from "./dc.js";
 import { Music } from "./music.js";

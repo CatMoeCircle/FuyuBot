@@ -5,15 +5,12 @@ import path from "path";
 import { URL, fileURLToPath } from "url";
 import yaml from "js-yaml";
 
-// 计算十六进制摘要
 const hexDigest = (data) =>
   data.map((d) => d.toString(16).padStart(2, "0")).join("");
 
-// 计算MD5摘要
 const hashDigest = (text) =>
   crypto.createHash("md5").update(text, "utf8").digest();
 
-// 计算MD5十六进制摘要
 const hashHexDigest = (text) => hexDigest(Array.from(hashDigest(text)));
 
 const readCookie = () => {
@@ -58,7 +55,7 @@ const post = async (url, params, cookie) => {
   return response.data;
 };
 
-// 获取歌曲URL
+// 获取歌曲链接
 const MusicUrl = async (id, level, cookies) => {
   const url =
     "https://interface3.music.163.com/eapi/song/enhance/player/url/v1";
@@ -113,11 +110,9 @@ const get163music = async (id, level) => {
     const songInfo = await MusicInfo(id);
     const songUrlData = await MusicUrl(id, level, cookies);
 
-    // 提取所需的字段
     const { size, url, level: songLevel } = songUrlData.data[0];
     const songDetails = songInfo.songs[0];
 
-    // 构建JSON对象
     const result = {
       name: songDetails.name,
       picUrl: songDetails.al.picUrl,
