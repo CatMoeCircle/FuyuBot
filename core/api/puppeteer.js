@@ -25,8 +25,6 @@ if (os.platform() === "android") {
   executablePath = "chromium-browser";
 }
 
-// logger.debug(`Using executable path: ${executablePath}`);
-
 const outputDir = "./caching/puppeteer";
 
 const ensureDirectoryExists = async (dir) => {
