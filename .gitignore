@@ -132,3 +132,7 @@ dist
 /caching
 plugins/kfc.js
 .github/copilot-instructions.md
+plugins/MLeaf/index.js
+plugins/Examples/html/kfc.html
+plugins/Examples/img/kfc.jpg
+plugins/Examples/index.js

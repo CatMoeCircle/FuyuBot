@@ -2,7 +2,6 @@ import puppeteer from "puppeteer-core";
 import { mkdir, unlink } from "fs/promises";
 import { join } from "path";
 import os from "os";
-import logger from "./logger.js";
 import { execSync } from "child_process";
 
 let executablePath;
@@ -26,7 +25,7 @@ if (os.platform() === "android") {
   executablePath = "chromium-browser";
 }
 
-logger.debug(`Using executable path: ${executablePath}`);
+// logger.debug(`Using executable path: ${executablePath}`);
 
 const outputDir = "./caching/puppeteer";
 
