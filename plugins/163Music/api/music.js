@@ -4,7 +4,6 @@ import fs from "fs";
 import path from "path";
 import { URL, fileURLToPath } from "url";
 import yaml from "js-yaml";
-import logger from "./logger.js";
 
 const hexDigest = (data) =>
   data.map((d) => d.toString(16).padStart(2, "0")).join("");
@@ -16,7 +15,7 @@ const hashHexDigest = (text) => hexDigest(Array.from(hashDigest(text)));
 
 const readCookie = () => {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-  const cookieFile = path.join(scriptDir, "./config/163cookie.yaml");
+  const cookieFile = path.join(scriptDir, "163cookie.yaml");
 
   if (!fs.existsSync(cookieFile)) {
     const defaultCookies = {
@@ -164,9 +163,19 @@ const get163music = async (id, level) => {
     throw error;
   }
 };
-const search163music = async (keyword) => {
+
+const searchMusic = async (keyword) => {
   const cookies = readCookie();
-  const result = await search(keyword, cookies);
-  return result.date;
+  const data = await search(keyword, cookies);
+  const result = data.data.resources.map((data) => ({
+    name: data.baseInfo.simpleSongData.name,
+    alia: data.baseInfo.simpleSongData.alia,
+    id: data.baseInfo.simpleSongData.id,
+    artists: data.baseInfo.simpleSongData.ar[0].name,
+    cover: data.baseInfo.simpleSongData.al.picUrl,
+    metaData: data.baseInfo.metaData,
+  }));
+  return result;
 };
-export default { get163music, search163music };
+
+export { get163music, searchMusic };
