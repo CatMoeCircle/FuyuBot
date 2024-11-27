@@ -17,7 +17,6 @@
 | Windows  | ✔  |
 | Termux  | ✔  |
 | Linux   | ✔  |
-| MacOS   | ?  |
 
 ---
 

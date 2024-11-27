@@ -16,7 +16,6 @@ A Telegram Bot project based on [GramJS](https://github.com/gram-js/gramjs), sup
 | Windows  | ✔      |
 | Termux   | ✔      |
 | Linux    | ✔      |
-| MacOS    | ?      |
 
 ---
 

@@ -131,3 +131,4 @@ dist
 *.yaml
 /caching
 plugins/kfc.js
+.github/copilot-instructions.md
