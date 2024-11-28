@@ -194,7 +194,7 @@ export default async (client, event) => {
               new Api.messages.EditMessage({
                 peer: message.chatId,
                 id: sentMessage.id,
-                message: "无法下载歌曲文件，请稍后再试。",
+                message: "无法下载歌曲文件，请检查你的id是否正确。",
               })
             );
           }

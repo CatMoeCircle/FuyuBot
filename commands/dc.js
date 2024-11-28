@@ -1,3 +1,4 @@
+import { JSON_SCHEMA } from "js-yaml";
 import { pimg, deleteImage } from "../core/api/puppeteer.js";
 
 export function dc(client, event) {
@@ -20,14 +21,26 @@ export function dc(client, event) {
           }
         } else {
           logger.info("用户没有头像");
-          avatarBase64 = null;
+          avatarBase64 = `https://dummyimage.com/80x80/cccccc/ffffff&text=${user.firstName.charAt(
+            0
+          )}`;
         }
 
-        const dcId = user.photo.dcId;
+        const dcId = user.photo.dcId || null;
         const ID = user.id.value.toString();
-        const userName = user.username || "未知用户";
-        const userFullName = user.firstName || "未知姓名";
-        const viewport = { width: 350, height: 240, deviceScaleFactor: 2 };
+        const userName = user.username || "null";
+        const userFullName =
+          (user.firstName === null ||
+          user.firstName === "null" ||
+          user.firstName === ""
+            ? ""
+            : user.firstName) +
+            (user.lastName === null ||
+            user.lastName === "null" ||
+            user.lastName === ""
+              ? ""
+              : user.lastName) || "未知姓名";
+        const viewport = { width: 400, height: 285, deviceScaleFactor: 2 };
 
         const htmlContent = `
 <!DOCTYPE html>
@@ -36,95 +49,111 @@ export function dc(client, event) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>userdcinfo</title>
+    <title>Document</title>
     <style>
+            html,
         body {
-            padding: 0;
             margin: 0;
+            padding: 0;
         }
 
         .main {
-            width: 350px;
-            height: 400px;
-
+            width: 400px;
+            height: 285px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .background {
-            width: 100%;
-            height: 100%;
             position: absolute;
-            z-index: -1;
+            width: 400px;
+            height: 135px;
         }
 
         .background img {
-            width: 350px;
-            height: 240px;
-            object-fit: cover;
-        }
-
-        .title {
-            color: white;
-            position: absolute;
-        }
-
-        .title h1 {
-            margin: 25px 0 0 25px;
-            padding: 0;
-            font-size: 30px;
-            text-shadow: 0 0 10px #000;
-            font-family: 'LXGW WenKai Screen';
-        }
-
-        .container-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            background: #ffffffbf;
-            border: 2px solid rgb(255, 255, 255);
-            border-radius: 10px;
-            margin-top: 120px;
-            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.632);
-            font-family: 'LXGW WenKai Screen';
-        }
-
-        .container {
-            width: 100%;
-            height: 110px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .avatar img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+            width: 400px;
+            height: 135px;
             object-fit: cover;
         }
 
         .avatar {
-            display: flex;
-            align-items: center;
-            margin-left: 5px;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            top: 80px;
+            left: 20px;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
-        .name {
-            font-size: 20px;
-            margin: 0;
-        }
-
-        .user,
-        .id {
-            margin: 0;
+        .content {
+            position: absolute;
+            width: 400px;
+            height: 165px;
+            top: 128px;
+            background-image: linear-gradient(to bottom right, #ffffff 0%, #fff3ff 100%);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
         .info {
-            width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            margin-left: 5px;
+            margin-left: 20px;
+        }
+
+        .info h2,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .content h2 {
+            margin-top: 30px;
+            font-size: 25px;
+            font-weight: 400;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 360px;
+
+        }
+
+        .username {
+            color: #808080;
+            font-size: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 360px;
+        }
+
+        .id {
+            color: #808080;
+            font-size: 15px;
+            margin-top: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 360px;
+        }
+
+        .tips {
+            display: flex;
+
+            margin: 20px 20px 0 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tips p {
+            margin: 0;
+            padding: 0;
+            font-size: 7px;
+            color: #808080;
         }
     </style>
 </head>
@@ -132,23 +161,25 @@ export function dc(client, event) {
 <body>
     <div class="main">
         <div class="background">
-            <img src="https://t.mwm.moe/pc" alt="">
+            <img src="https://998860.xyz/tp/ys" alt="background">
         </div>
-        <div class="title">
-            <h1>个人信息</h1>
-        </div>
-        <div class="container">
-            <div class="container-info">
-                <div class="avatar">
-                    <img src="${avatarBase64}" alt="avatar">
+        <img class="avatar" src="${avatarBase64}" alt="avatar">
+        <div class="content">
+            <div class="info">
+                <h2 class="name">${userFullName}</h2>
+                <p class="username">@${userName}</p>
+                <p class="id">ID:<span class="id_id">${ID}</span> - DC:<span class="id_dc">${dcId}</span></p>
+            </div>
+            <div class="tips">
+                <div>
+                    <p>如果DC为空请检查头像是否设置或公开显示</p>
                 </div>
-                <div class="info">
-                    <h1 class="name">${userName}</h1>
-                    <p class="user">用户名：<span>@${userFullName}</span></p>
-                    <p class="id">Id:${ID} - DC:<span>${dcId}</span></p>
+                <div>
+                    <p>version<span>1.0.0</span></p>
                 </div>
             </div>
         </div>
+
     </div>
 </body>
 

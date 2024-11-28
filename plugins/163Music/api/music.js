@@ -15,7 +15,7 @@ const hashHexDigest = (text) => hexDigest(Array.from(hashDigest(text)));
 
 const readCookie = () => {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-  const cookieFile = path.join(scriptDir, "163cookie.yaml");
+  const cookieFile = path.join(scriptDir, "./163cookie.yaml");
 
   if (!fs.existsSync(cookieFile)) {
     const defaultCookies = {
