@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .mian {
+        width: 1110px;
+        height: 330px;
+        background-color: #ffffff92;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+      }
+      .bg {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+      .header {
+        width: 1250px;
+        height: 600px;
+        background-color: #f5f5f5;
+        border-radius: 16px;
+      }
+      .container {
+        font-size: 60px;
+        padding: 60px 0 0 50px;
+        margin: 0 0 50px 0;
+      }
+      .help {
+        display: flex;
+        flex-direction: row;
+        width: 336px;
+        height: 90px;
+        padding: 20px;
+        align-items: center;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      .video {
+        display: flex;
+        flex-direction: row;
+        width: 336px;
+        height: 90px;
+        padding: 20px;
+        align-items: center;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        margin-left: 10px;
+      }
+      .dc {
+        display: flex;
+        flex-direction: row;
+        width: 336px;
+        height: 90px;
+        padding: 20px;
+        align-items: center;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        margin-left: 10px;
+      }
+      .kfc {
+        display: flex;
+        flex-direction: row;
+        width: 336px;
+        height: 90px;
+        padding: 20px;
+        align-items: center;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        margin-left: 10px;
+      }
+      .ioc {
+        width: 50px;
+        height: 50px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .line {
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+      }
+      .text {
+        font-size: 24px;
+      }
+      .Notes {
+        font-size: 18px;
+      }
+      .header {
+        background-image: linear-gradient(
+          to top right,
+          #ffffff 0%,
+          #dcebf5 100%
+        );
+      }
+      .title {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-top: 20px;
+      }
+      .music {
+        display: flex;
+        flex-direction: row;
+        width: 336px;
+        height: 90px;
+        padding: 20px;
+        align-items: center;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        margin-left: 10px;
+        margin-top: 20px;
+      }
+      .unknown {
+        display: flex;
+        flex-direction: row;
+        width: 336px;
+        height: 90px;
+        padding: 20px;
+        align-items: center;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      .Menu {
+        display: flex;
+        width: 100%;
+        align-items: flex-end;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">帮助菜单</div>
+      <div class="bg">
+        <div class="mian">
+          <div class="title">
+            <div class="dc">
+              <div class="ioc">
+                <img
+                  src="http://127.0.0.1:3000/img/dc.png"
+                  alt="Avatar"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="line">
+                <div class="text">/dc</div>
+                <div class="Notes">查看你所在服务器</div>
+              </div>
+            </div>
+            <div class="video">
+              <div class="ioc">
+                <img
+                  src="http://127.0.0.1:3000/img/video.png"
+                  alt="Avatar"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="line">
+                <div class="text">/video</div>
+                <div class="Notes">解析短视频无水印 /video+视频分享链接</div>
+              </div>
+            </div>
+            <div class="help">
+              <div class="ioc">
+                <img
+                  src="http://127.0.0.1:3000/img/help.png"
+                  alt="Avatar"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="line">
+                <div class="text">/help</div>
+                <div class="Notes">帮助文档</div>
+              </div>
+            </div>
+          </div>
+          <div class="Menu">
+            <div class="music">
+              <div class="ioc">
+                <img
+                  src="http://127.0.0.1:3000/img/music.png"
+                  alt="Avatar"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="line">
+                <div class="text">/muisc</div>
+                <div class="Notes">使用/muisc 歌曲名称搜索</div>
+              </div>
+            </div>
+            <div class="kfc">
+              <div class="ioc">
+                <img
+                  src="http://127.0.0.1:3000/img/kfc.png"
+                  alt="Avatar"
+                  style="width: 100%; height: 100%; object-fit: cover"
+                />
+              </div>
+              <div class="line">
+                <div class="text">/kfc</div>
+                <div class="Notes">嗨！兄弟知道今天是什么日子吗？</div>
+              </div>
+            </div>
+            <div class="unknown">
+              <div class="null"></div>
+              <div class="line">
+                <div class="text">空命令</div>
+                <div class="Notes">占位</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
