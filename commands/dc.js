@@ -161,7 +161,7 @@ export function dc(client, event) {
 <body>
     <div class="main">
         <div class="background">
-            <img src="https://998860.xyz/tp/ys" alt="background">
+            <img src="http://localhost:3000/api/random-image" alt="background">
         </div>
         <img class="avatar" src="${avatarBase64}" alt="avatar">
         <div class="content">
@@ -179,7 +179,6 @@ export function dc(client, event) {
                 </div>
             </div>
         </div>
-
     </div>
 </body>
 

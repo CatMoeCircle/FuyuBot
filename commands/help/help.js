@@ -4,15 +4,19 @@ import fs from "fs";
 export async function help(client, event) {
   const message = event.message;
   if (message.message === "/help") {
-    const htmlContent = fs.readFileSync(
-      "commands/help/html/help.html",
-      "utf-8"
-    );
-    const viewport = { width: 1250, height: 600 };
-    const screenshotPath = await pimg(htmlContent, viewport);
-    await client.sendMessage(message.chatId, {
-      file: screenshotPath,
-    });
-    await deleteImage(screenshotPath);
+    try {
+      const htmlContent = fs.readFileSync(
+        "commands/help/html/help.html",
+        "utf-8"
+      );
+      const viewport = { width: 1250, height: 600 };
+      const screenshotPath = await pimg(htmlContent, viewport);
+      await client.sendMessage(message.chatId, {
+        file: screenshotPath,
+      });
+      await deleteImage(screenshotPath);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   }
 }
