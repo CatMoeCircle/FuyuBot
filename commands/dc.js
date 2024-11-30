@@ -1,11 +1,10 @@
-import { JSON_SCHEMA } from "js-yaml";
-import { pimg, deleteImage } from "../core/api/puppeteer.js";
+import { genImage, deleteImage } from "../core/api/puppeteer.js";
+import log from "#logger";
 
 export function dc(client, event) {
   const message = event.message;
-  if (message.message === "/dc") {
+  if (message.message.startsWith("/dc")) {
     const userId = message.senderId;
-
     // 获取用户信息
     client
       .getEntity(userId)
@@ -16,30 +15,23 @@ export function dc(client, event) {
             const photo = await client.downloadProfilePhoto(user);
             avatarBase64 = `data:image/jpeg;base64,${photo.toString("base64")}`;
           } catch (downloadError) {
-            logger.error(`无法下载头像: ${downloadError}`);
+            log.error(`无法下载头像: ${downloadError}`);
             avatarBase64 = null;
           }
         } else {
-          logger.info("用户没有头像");
+          log.info("用户没有头像");
           avatarBase64 = `https://dummyimage.com/80x80/cccccc/ffffff&text=${user.firstName.charAt(
             0
           )}`;
         }
-
         const dcId = user.photo.dcId || null;
         const ID = user.id.value.toString();
         const userName = user.username || "null";
         const userFullName =
-          (user.firstName === null ||
-          user.firstName === "null" ||
-          user.firstName === ""
-            ? ""
-            : user.firstName) +
-            (user.lastName === null ||
-            user.lastName === "null" ||
-            user.lastName === ""
-              ? ""
-              : user.lastName) || "未知姓名";
+          user.title ||
+          (user.firstName && user.firstName !== "null" ? user.firstName : "") +
+            (user.lastName && user.lastName !== "null" ? user.lastName : "") ||
+          "未知姓名";
         const viewport = { width: 400, height: 285, deviceScaleFactor: 2 };
 
         const htmlContent = `
@@ -175,7 +167,7 @@ export function dc(client, event) {
                     <p>如果DC为空请检查头像是否设置或公开显示</p>
                 </div>
                 <div>
-                    <p>version<span>1.0.0</span></p>
+                    <p>Shiny☆Bot - v<span>${process.env.npm_package_version}</span></p>
                 </div>
             </div>
         </div>
@@ -186,15 +178,21 @@ export function dc(client, event) {
         `;
 
         try {
-          const screenshotPath = await pimg(htmlContent, viewport);
-
-          await client.sendMessage(message.chatId, {
-            file: screenshotPath,
-          });
+          const screenshotPath = await genImage(htmlContent, viewport);
+          if (message.peerId.channelId) {
+            await client.sendMessage(message.chatId, {
+              file: screenshotPath,
+              replyTo: message.id,
+            });
+          } else {
+            await client.sendMessage(message.chatId, {
+              file: screenshotPath,
+            });
+          }
 
           await deleteImage(screenshotPath);
         } catch (error) {
-          logger.error(`无法生成截图: ${error}`);
+          log.error(`无法生成截图: ${error}`);
 
           client.sendMessage(message.chatId, {
             message: "无法生成截图，请稍后再试。",
@@ -202,7 +200,7 @@ export function dc(client, event) {
         }
       })
       .catch((err) => {
-        logger.error(`无法获取用户信息: ${err}`);
+        log.error(`无法获取用户信息: ${err}`);
 
         client.sendMessage(message.chatId, {
           message: "无法获取你的DC服务器信息，请稍后再试。",

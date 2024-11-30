@@ -3,7 +3,8 @@ import fetch from "node-fetch";
 import fs from "fs";
 import { join, extname } from "path";
 import { Api } from "telegram";
-import { pimg, deleteImage } from "../../core/api/puppeteer.js";
+import { genImage, deleteImage } from "#puppeteer";
+import log from "#logger";
 
 const downloadDir = "../../caching/downloads";
 
@@ -13,9 +14,9 @@ const ensureDirectoryExists = (dir) => {
   }
 };
 
-export default async (client, event) => {
+export default async function music(client, event) {
   if (!event || !event.message) {
-    console.error("Event or event.message is undefined");
+    log.error("Event or event.message is undefined");
     return;
   }
   const message = event.message;
@@ -47,7 +48,7 @@ export default async (client, event) => {
           return;
         }
         let htmlContent = fs.readFileSync(
-          "plugins/163Music/html/163search.html",
+          "plugins/XQ-plugins/163Music/html/163search.html",
           "utf8"
         );
 
@@ -81,15 +82,20 @@ export default async (client, event) => {
         });
 
         htmlContent = htmlContent.replace("${musicList}", musicList);
+        htmlContent = htmlContent.replace(
+          "${version}",
+          process.env.npm_package_version
+        );
         const viewport = { width: 400, height: 180, deviceScaleFactor: 3 };
-        const screenshotPath = await pimg(htmlContent, viewport);
+        const screenshotPath = await genImage(htmlContent, viewport);
         await client.sendMessage(message.chatId, {
           file: screenshotPath,
         });
+        await deleteImage(screenshotPath);
         return;
       }
     } catch (getSongInfoError) {
-      logger.error(`无法获取歌曲信息: ${getSongInfoError}`);
+      log.error(`无法获取歌曲信息: ${getSongInfoError}`);
       client.sendMessage(message.chatId, {
         message: "无法获取歌曲信息，请稍后再试。",
       });
@@ -105,7 +111,7 @@ export default async (client, event) => {
       })
       .then(async (sentMessage) => {
         if (!sentMessage || !sentMessage.id) {
-          logger.error("发送消息失败，无法获取有效的消息ID");
+          log.error("发送消息失败，无法获取有效的消息ID");
           return;
         }
 
@@ -169,7 +175,7 @@ export default async (client, event) => {
                 fs.unlinkSync(filePath);
                 fs.unlinkSync(coverPath);
               } catch (uploadError) {
-                logger.error(`无法上传歌曲文件: ${uploadError}`);
+                log.error(`无法上传歌曲文件: ${uploadError}`);
                 await client.invoke(
                   new Api.messages.EditMessage({
                     peer: message.chatId,
@@ -179,7 +185,7 @@ export default async (client, event) => {
                 );
               }
             } catch (coverDownloadError) {
-              logger.error(`无法下载封面图片: ${coverDownloadError}`);
+              log.error(`无法下载封面图片: ${coverDownloadError}`);
               await client.invoke(
                 new Api.messages.EditMessage({
                   peer: message.chatId,
@@ -189,7 +195,7 @@ export default async (client, event) => {
               );
             }
           } catch (songDownloadError) {
-            logger.error(`无法下载歌曲文件: ${songDownloadError}`);
+            log.error(`无法下载歌曲文件: ${songDownloadError}`);
             await client.invoke(
               new Api.messages.EditMessage({
                 peer: message.chatId,
@@ -199,7 +205,7 @@ export default async (client, event) => {
             );
           }
         } catch (getSongInfoError) {
-          logger.error(`无法获取歌曲信息: ${getSongInfoError}`);
+          log.error(`无法获取歌曲信息: ${getSongInfoError}`);
           await client.invoke(
             new Api.messages.EditMessage({
               peer: message.chatId,
@@ -210,4 +216,4 @@ export default async (client, event) => {
         }
       });
   }
-};
+}

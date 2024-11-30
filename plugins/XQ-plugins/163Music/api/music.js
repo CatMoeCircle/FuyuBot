@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { URL, fileURLToPath } from "url";
 import yaml from "js-yaml";
-
+import log from "#logger";
 const hexDigest = (data) =>
   data.map((d) => d.toString(16).padStart(2, "0")).join("");
 
@@ -30,7 +30,7 @@ const readCookie = () => {
   const fileContents = fs.readFileSync(cookieFile, "utf8");
   const cookies = yaml.load(fileContents);
   if (!cookies.MUSIC_U) {
-    logger.warn(
+    log.warn(
       "未填写网易云音乐的 cookie 信息到 `163cookie.yaml` 中的 MUSIC_U 字段。"
     );
   }
@@ -51,7 +51,7 @@ const post = async (url, params, cookie) => {
   const response = await axios.post(url, `params=${params}`, {
     headers,
   });
-  logger.debug(`POST ${url} - ${JSON.stringify(response.data)}`);
+  log.debug(`POST ${url} - ${JSON.stringify(response.data)}`);
   return response.data;
 };
 
@@ -156,7 +156,7 @@ const get163music = async (id, level) => {
       url: url,
     };
 
-    logger.debug(`获取歌曲信息成功：${JSON.stringify(result)}`);
+    log.debug(`获取歌曲信息成功：${JSON.stringify(result)}`);
     return result;
   } catch (error) {
     console.error(error);

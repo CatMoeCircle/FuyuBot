@@ -1,8 +1,8 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { registerCommands } from "../commands/index.js";
-import { logMessage } from "./utils/message.js";
-import "./plugins.js";
+import { loadPlugins } from "./plugins.js";
+import log from "#logger";
 import dotenv from "dotenv";
 import fs from "fs";
 import yaml from "js-yaml";
@@ -28,17 +28,16 @@ export default async function start() {
     connectionRetries: 5,
   });
 
-  // 开始客户端，传入 botToken
   await client.start({
     botAuthToken: botToken,
-    onError: (err) => logger.error(`${err}`),
+    onError: (err) => log.error(`${err}`),
   });
 
-  logger.info("You should now be connected.");
+  log.info("[BOT]bot已连接");
   if (botconfig.creator_id) {
-    client.sendMessage(botconfig.creator_id, { message: "bot已经上线" });
+    // client.sendMessage(botconfig.creator_id, { message: "bot已经上线" });
   } else {
-    logger.warn("未设置管理员ID前往 config/bot.yaml 设置");
+    log.warn("[BOT]未设置管理员ID前往 config/bot.yaml 设置");
   }
 
   // 登录成功后保存新的 session 到 cookie.yaml
@@ -46,15 +45,5 @@ export default async function start() {
   fs.writeFileSync("config/cookie.yaml", yaml.dump(cookie));
 
   registerCommands(client);
-
-  client.addEventHandler((event) => {
-    logMessage(client, event);
-  }, new TelegramClient.events.NewMessage({}));
-
-  // 插件
-  Object.values(global.plugins).forEach((plugin) => {
-    if (typeof plugin === "function") {
-      plugin(client);
-    }
-  });
+  loadPlugins(client);
 }

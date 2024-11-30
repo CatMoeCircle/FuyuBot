@@ -1,6 +1,6 @@
-// 引入必要的库
 import axios from "axios";
 import UserAgent from "user-agents";
+import log from "#logger";
 
 const userAgent = new UserAgent();
 // 解析分享链接中的视频ID
@@ -28,11 +28,11 @@ async function parseVideoId(shareLink) {
         } else if (redirectedUrl.includes("/slides/")) {
           videoId = redirectedUrl.split("/slides/")[1].split("/")[0];
         } else {
-          logger.error(`重定向URL不包含视频、笔记或幻灯片ID: ${redirectedUrl}`);
+          log.error(`重定向URL不包含视频、笔记或幻灯片ID: ${redirectedUrl}`);
         }
       }
     } catch (error) {
-      logger.error(`重定向链接出错: ${error.message}`);
+      log.error(`重定向链接出错: ${error.message}`);
     }
   }
   return videoId;
@@ -113,7 +113,7 @@ async function getVideoInfo(videoId) {
       };
     }
   } catch (error) {
-    logger.error(`获取视频信息时出错: ${error.message}`);
+    log.error(`获取视频信息时出错: ${error.message}`);
     throw error;
   }
 }
@@ -130,7 +130,7 @@ async function getFinalVideoUrl(videoUrl) {
     });
     return response.headers.location || videoUrl;
   } catch (error) {
-    logger.error(`获取视频的最终播放地址: ${error.message}`);
+    log.error(`获取视频的最终播放地址: ${error.message}`);
     throw error;
   }
 }
@@ -138,12 +138,12 @@ async function getFinalVideoUrl(videoUrl) {
 (async () => {})();
 
 const DouYin = async (url) => {
-  logger.debug(`收到链接: ${url}`);
+  log.debug(`收到链接: ${url}`);
 
   const validUrlPattern =
     /^(https?:\/\/)?(www\.)?(douyin\.com|v\.douyin\.com)\/.+/;
   if (!validUrlPattern.test(url)) {
-    logger.error("无效的链接格式");
+    log.error("无效的链接格式");
     throw new Error("无效的链接格式");
   }
 
@@ -154,10 +154,10 @@ const DouYin = async (url) => {
 
     const videoInfo = await getVideoInfo(videoId);
 
-    logger.debug(`获取到的抖音视频信息: ${JSON.stringify(videoInfo)}`);
+    log.debug(`获取到的抖音视频信息: ${JSON.stringify(videoInfo)}`);
     return videoInfo;
   } catch (error) {
-    logger.error(`获取抖音视频信息时出错: ${error.message}`);
+    log.error(`获取抖音视频信息时出错: ${error.message}`);
     throw error;
   }
 };

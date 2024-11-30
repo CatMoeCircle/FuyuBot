@@ -1,4 +1,4 @@
-import { pimg, deleteImage } from "../../core/api/puppeteer.js";
+import { genImage, deleteImage } from "../../core/api/puppeteer.js";
 import fs from "fs";
 
 export async function help(client, event) {
@@ -10,7 +10,7 @@ export async function help(client, event) {
         "utf-8"
       );
       const viewport = { width: 1250, height: 600 };
-      const screenshotPath = await pimg(htmlContent, viewport);
+      const screenshotPath = await genImage(htmlContent, viewport);
       await client.sendMessage(message.chatId, {
         file: screenshotPath,
       });

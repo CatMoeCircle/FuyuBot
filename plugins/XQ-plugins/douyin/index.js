@@ -1,6 +1,9 @@
-import DouYin from "../core/api/video/douyin.js";
+import DouYin from "./api/douyin.js";
 
-export async function Video(client, event) {
+export default async function douyin(client, event) {
+  if (!event || !event.message) {
+    return;
+  }
   const message = event.message.text;
 
   if (message.startsWith("/video")) {

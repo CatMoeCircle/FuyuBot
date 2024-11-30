@@ -1,24 +1,19 @@
 import loadConfig from "./core/config.js";
 import start from "./core/bot.js";
 import "./WebUI/web.js";
-import { logger } from "./core/log.js";
+import log from "#logger";
 
-async function init() {
+(async () => {
   try {
-    console.log("生成配置文件...");
+    log.info("[INIT]生成配置文件...");
 
     const load = await loadConfig();
-    console.log(load);
     if (load === true) {
-      logger.info("配置文件生成完毕，开始启动bot...");
+      log.info("[INIT]配置文件生成完毕，开始启动bot...");
       await start();
-      logger.info("Start Bot...");
+      log.info("[BOT]启动成功！");
     }
   } catch (err) {
-    logger.error(`Failed to start the bot: ${err}`);
+    log.error(`[BOT]启动失败: ${err}`);
   }
-}
-
-init();
-
-global.logger = logger;
+})();

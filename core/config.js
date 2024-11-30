@@ -42,9 +42,14 @@ async function loadConfig() {
   ];
 
   for (const { path, default: defaultConfig } of configs) {
-    if (!fs.existsSync(path)) {
-      const yamlStr = yaml.dump(defaultConfig);
-      fs.writeFileSync(path, yamlStr, "utf8");
+    try {
+      if (!fs.existsSync(path)) {
+        const yamlStr = yaml.dump(defaultConfig);
+        fs.writeFileSync(path, yamlStr, "utf8");
+      }
+    } catch (err) {
+      log.error(`Failed to load config: ${err}`);
+      return false;
     }
   }
   return true;

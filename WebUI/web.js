@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import chokidar from "chokidar";
+import log from "#logger";
 
 const app = express();
 const port = 3000;
@@ -35,8 +36,7 @@ const updateImagesList = () => {
 updateImagesList();
 
 // 监听resources/Background目录的变化
-chokidar.watch(imagesDir).on("all", (event, path) => {
-  console.log(event, path);
+chokidar.watch(imagesDir).on("all", () => {
   updateImagesList();
 });
 
@@ -65,5 +65,5 @@ app.get("/api/random-image", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`服务器正在运行在 http://localhost:${port}`);
+  log.info(`[WEB]服务器正在运行在 http://localhost:${port}`);
 });

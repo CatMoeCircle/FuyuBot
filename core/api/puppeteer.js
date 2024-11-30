@@ -3,6 +3,7 @@ import { mkdir, unlink } from "fs/promises";
 import { join } from "path";
 import os from "os";
 import { execSync } from "child_process";
+import log from "#logger";
 
 let executablePath;
 // Termux自动获取chromium-browser
@@ -13,7 +14,7 @@ if (os.platform() === "android") {
       throw new Error("chromium-browser not found in PATH");
     }
   } catch (error) {
-    logger.error(`Error getting chromium-browser path: ${error.message}`);
+    log.error(`Error getting chromium-browser path: ${error.message}`);
     throw error;
   }
   // Windows默认使用edge的路径
@@ -22,7 +23,15 @@ if (os.platform() === "android") {
     "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
   //Linux
 } else if (os.platform() === "linux") {
-  executablePath = "chromium-browser";
+  try {
+    executablePath = execSync("which chromium-browser").toString().trim();
+    if (!executablePath) {
+      throw new Error("chromium-browser not found in PATH");
+    }
+  } catch (error) {
+    log.error(`Error getting chromium-browser path: ${error.message}`);
+    throw error;
+  }
 }
 
 const outputDir = "./caching/puppeteer";
@@ -31,7 +40,7 @@ const ensureDirectoryExists = async (dir) => {
   try {
     await mkdir(dir, { recursive: true });
   } catch (err) {
-    logger.error(`Error ensuring directory exists: ${err.message}`);
+    log.error(`Error ensuring directory exists: ${err.message}`);
   }
 };
 
@@ -43,7 +52,7 @@ const retryFunction = async (fn, retries = 3, delay = 1000) => {
       return await fn();
     } catch (error) {
       attempt++;
-      logger.error(`Attempt ${attempt} failed: ${error.message}`);
+      log.error(`Attempt ${attempt} failed: ${error.message}`);
       if (attempt >= retries) {
         throw new Error(`Failed after ${retries} attempts`);
       }
@@ -54,7 +63,10 @@ const retryFunction = async (fn, retries = 3, delay = 1000) => {
 };
 
 // 图片生成
-const pimg = async (htmlContent, viewport = { width: 800, height: 600 }) => {
+const genImage = async (
+  htmlContent,
+  viewport = { width: 800, height: 600 }
+) => {
   let browser;
   const startTime = Date.now();
 
@@ -63,7 +75,7 @@ const pimg = async (htmlContent, viewport = { width: 800, height: 600 }) => {
       browser = await puppeteer.launch({
         executablePath,
         headless: true,
-        args: ["--no-sandbox", "--disable-gpu"],
+        args: ["--no-sandbox", "--enable-gpu"],
       });
 
       const page = await browser.newPage();
@@ -84,11 +96,11 @@ const pimg = async (htmlContent, viewport = { width: 800, height: 600 }) => {
 
       const endTime = Date.now();
       const duration = (endTime - startTime) / 1000;
-      logger.debug(`Screenshot generated in ${duration} seconds`);
+      log.debug(`Screenshot generated in ${duration} seconds`);
 
       return outputPath;
     } catch (error) {
-      logger.error(`Error generating screenshot: ${error}`);
+      log.error(`Error generating screenshot: ${error}`);
       throw error;
     } finally {
       if (browser) {
@@ -105,9 +117,9 @@ const deleteImage = async (filePath) => {
   try {
     await unlink(filePath);
   } catch (error) {
-    logger.error(`Error deleting file: ${error.message}`);
+    log.error(`Error deleting file: ${error.message}`);
     throw error;
   }
 };
 
-export { pimg, deleteImage };
+export { genImage, deleteImage };
