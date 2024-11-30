@@ -13,8 +13,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 设置静态文件目录
-app.use(express.static(path.join(__dirname, "../plugins")));
-app.use(express.static(path.join(__dirname, "resources")));
+app.use("/plugins", express.static(path.join(__dirname, "../plugins")));
+app.use("/resources", express.static(path.join(__dirname, "resources")));
 
 // 获取resources/Background目录下的图像列表
 let images = [];
