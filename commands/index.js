@@ -1,31 +1,37 @@
 import { TelegramClient } from "telegram";
 import { Start } from "./start.js";
-import { dc } from "./dc.js";
+import { dc } from "./dc/dc.js";
 import { help } from "./help/help.js";
 
 const commandHandlers = {
-  "/start": Start,
-  "/dc": dc,
-  "/help": help,
+  start: Start,
+  dc: dc,
+  help: help,
 };
 
 export const registerCommands = async (client) => {
   client.addEventHandler(async (event) => {
     const message = event.message;
-    const command = message.message.split(" ")[0];
+    const text = message.message;
+    if (!text) return;
+
+    // 使用正则表达式提取命令
+    const match = text.match(/^([\/!])(\w+)(@(\w+))?/);
+    if (!match) return;
+
+    const [, , cmd, , username] = match;
     const me = await client.getMe();
     const botUsername = me.username;
 
-    const [cmd, username] = command.split("@");
+    // 检查命令是否指向该机器人
     if (username && username.toLowerCase() !== botUsername.toLowerCase()) {
       return;
     }
 
-    const handler = Object.keys(commandHandlers).find((cmdKey) =>
-      cmd.startsWith(cmdKey)
-    );
+    // 查找对应的命令处理器
+    const handler = commandHandlers[cmd.toLowerCase()];
     if (handler) {
-      await commandHandlers[handler](client, event);
+      await handler(client, event);
     }
   }, new TelegramClient.events.NewMessage({}));
 };
