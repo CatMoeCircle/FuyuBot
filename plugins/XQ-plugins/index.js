@@ -3,8 +3,9 @@ import douyin from "./douyin/douyin.js";
 import log from "#logger";
 import { NewMessage } from "telegram/events/index.js";
 
-export default async (client) => {
-  client.addEventHandler(async (event) => {
+export default async function (client) {
+  // 定义一个处理器函数
+  const handler = async (event) => {
     try {
       // 把获取的消息赋值给message
       const message = event.message;
@@ -25,5 +26,12 @@ export default async (client) => {
     } catch (error) {
       log.error(`[XQ-plugins]插件处理消息时出错: ${error}`);
     }
-  }, new NewMessage());
-};
+  };
+
+  // 注册处理器
+  client.addEventHandler(handler, new NewMessage({}));
+
+  return {
+    handler,
+  };
+}
