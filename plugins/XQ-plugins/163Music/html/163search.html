@@ -153,6 +153,8 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
         }
 
         .music-item-id {
@@ -192,6 +194,15 @@
 
         .tips-command {
             color: #118cff;
+        }
+
+        .vip-tag {
+            border: 0.5px solid #FF3A3A;
+            color: #FF3A3A;
+            border-radius: 2px;
+            font-size: 4px;
+            height: 5px;
+            padding: 0 1px;
         }
     </style>
 </head>
@@ -237,6 +248,7 @@
             </div>
             <div class="music-list">
                 ${musicList}
+
             </div>
             <div class="tips">
                 <p>提示：最多展示6条搜索结果 &nbsp; 使用&nbsp<span class="tips-text"><span class="tips-command">/music</span> +

@@ -172,8 +172,9 @@ export default async function music(client, event) {
         });
       }
       let search;
+      let keyword = message.message.replace(/^\/music/, "");
       try {
-        search = await searchMusic(searchkey);
+        search = await searchMusic(keyword);
       } catch (error) {
         client.editMessage(message.chatId, {
           message: searchmsg.id,
@@ -181,11 +182,18 @@ export default async function music(client, event) {
         });
         throw error;
       }
-
       let musicList = "";
       let count = 0;
       search.forEach((search) => {
         if (count < 6) {
+          let vipTag = "";
+          if (search.metaData && search.metaData.includes("VIP")) {
+            vipTag = `
+              <div class="vip-tag">
+                <div class="cmd-tag-content">VIP</div>
+              </div>`;
+          }
+
           musicList += `
             <div class="music-item">
               <div class="music-item-cover">
@@ -196,6 +204,7 @@ export default async function music(client, event) {
                   <p>${search.name}</p> 
                 </div>
                 <div class="music-item-artist">
+                  ${vipTag}
                   <p>${search.artists}</p>
                 </div>
                 <div class="music-item-id">
@@ -210,7 +219,7 @@ export default async function music(client, event) {
         }
       });
       const html = searchhtml
-        .replace("${keyword}", searchkey)
+        .replace("${keyword}", keyword)
         .replace("${musicList}", musicList)
         .replace("${version}", process.env.npm_package_version);
       const viewport = { width: 400, height: 180, deviceScaleFactor: 3 };
