@@ -12,12 +12,13 @@ const viewport = { width: 400, height: 285, deviceScaleFactor: 2 };
 
 export async function dc(client, event) {
   const message = event.message;
-
+  log.info(message);
   const tip = await client.sendMessage(message.chatId, {
     message: "正在获取...",
+    replyTo: message.id,
   });
 
-  const UserInfo = await client.getEntity(message.chatId);
+  const UserInfo = await client.getEntity(message.senderId);
   // 下载转换头像为base64
   let avatarBase64;
   if (UserInfo.photo) {
@@ -34,7 +35,6 @@ export async function dc(client, event) {
       0
     )}`;
   }
-
   const dcId = UserInfo.photo.dcId || null;
   const ID = UserInfo.id.value.toString();
   const userName = UserInfo.username || "null";
