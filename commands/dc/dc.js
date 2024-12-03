@@ -12,7 +12,6 @@ const viewport = { width: 400, height: 285, deviceScaleFactor: 2 };
 
 export async function dc(client, event) {
   const message = event.message;
-  log.info(message);
   const tip = await client.sendMessage(message.chatId, {
     message: "正在获取...",
     replyTo: message.id,
