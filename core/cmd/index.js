@@ -1,12 +1,10 @@
 import { TelegramClient } from "telegram";
 import { Start } from "./start.js";
 import { dc } from "./dc/dc.js";
-import { help } from "./help/help.js";
 
 const commandHandlers = {
   start: Start,
   dc: dc,
-  help: help,
 };
 
 export const registerCommands = async (client) => {

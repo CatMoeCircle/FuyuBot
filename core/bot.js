@@ -1,11 +1,12 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
-import { registerCommands } from "../commands/index.js";
+import { registerCommands } from "./cmd/index.js";
 import { loadPlugins } from "./plugins.js";
 import log from "#logger";
 import dotenv from "dotenv";
 import fs from "fs";
 import yaml from "js-yaml";
+
 dotenv.config();
 
 const apiId = parseInt(process.env.API_ID, 10);
