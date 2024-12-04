@@ -1,4 +1,4 @@
-**meng acg Bot**
+**cat acg Bot**
 ---
 
 [中文](./docs/README_zh-CN.md)
