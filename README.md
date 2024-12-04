@@ -1,4 +1,4 @@
-**Shiny Journey Bot**
+**meng acg Bot**
 ---
 
 [中文](./docs/README_zh-CN.md)
@@ -67,7 +67,7 @@ pkg update && pkg upgrade
 # Install required packages
 pkg install x11-repo tur-repo
 pkg install chromium
-pkg install nodejs python3 setuptools binutils binutils-is-llvm git
+pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
 # Download Termux's Android NDK https://github.com/lzhiyong/termux-ndk
 curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
 unzip android-ndk-r27b-aarch64.zip
