@@ -1,4 +1,4 @@
-**Shiny Journey Bot**
+**cat acg Bot**
 ---
 
 [English](../README.md)
