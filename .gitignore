@@ -128,9 +128,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-*.yaml
-/caching
-plugins/kfc.js
-.github/copilot-instructions.md
-plugins/MLeaf-plugins/*
 
+*.yaml
+
+# Cache directories
+/caching
+
+#github-copilot
+.github/copilot-instructions.md
+
+# Plugin directory
+/plugins

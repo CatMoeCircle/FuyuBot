@@ -1,7 +1,7 @@
 export async function Start(client, event) {
   const message = event.message;
   const text =
-    "欢迎使用 Shiny☆journey BOT\n<a href='https://github.com/xiaoqvan/shiny-journey-bot'>Github</a>";
+    "欢迎使用 Cat☆acg BOT\n<a href='https://github.com/moecatacg/cat-acg'>Github</a>";
   try {
     if (message.peerId?.className === "PeerUser") {
       const sentMessage = await client.sendMessage(message.chatId, {
