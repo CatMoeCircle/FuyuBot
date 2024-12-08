@@ -9,9 +9,22 @@ import log from "#logger";
 
     const load = await loadConfig();
     if (load === true) {
-      log.info("[INIT]配置文件生成完毕，开始启动bot...");
-      await start();
-      log.info("[BOT]启动成功！");
+      const retryInterval = 5000;
+
+      const initializeBot = async () => {
+        try {
+          log.info("[INIT]配置文件生成完毕，开始启动bot...");
+          await start();
+          log.info("[BOT]启动成功！");
+        } catch (err) {
+          log.error(
+            `[BOT]启动失败: ${err}，${retryInterval / 1000}秒后尝试重启...`
+          );
+          setTimeout(initializeBot, retryInterval);
+        }
+      };
+
+      await initializeBot();
     }
   } catch (err) {
     log.error(`[BOT]启动失败: ${err}`);
