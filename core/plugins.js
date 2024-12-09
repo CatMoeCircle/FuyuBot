@@ -14,7 +14,7 @@ export const loadPlugins = async (client) => {
   const pluginsDir = path.resolve(__dirname, "../plugins");
 
   const watcher = chokidar.watch(pluginsDir, {
-    ignored: /(^|[\/\\])\../, // 忽略隐藏文件
+    ignored: /(^|[/\\])\../, // 忽略隐藏文件
     persistent: true,
   });
 

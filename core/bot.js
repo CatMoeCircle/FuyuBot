@@ -17,7 +17,7 @@ export default async function start() {
   let cookie;
   try {
     cookie = yaml.load(fs.readFileSync("config/cookie.yaml", "utf-8"));
-  } catch (err) {
+  } catch {
     cookie = {
       stringSession: process.env.STRING_SESSION || "",
     };

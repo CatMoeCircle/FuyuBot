@@ -5,7 +5,8 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "test": "node app.js"
+    "test": "node app.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,10 @@
   "imports": {
     "#logger": "./core/log.js",
     "#puppeteer": "./core/api/puppeteer.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0"
   }
 }

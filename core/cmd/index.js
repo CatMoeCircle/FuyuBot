@@ -14,7 +14,7 @@ export const registerCommands = async (client) => {
     if (!text) return;
 
     // 使用正则表达式提取命令
-    const match = text.match(/^([\/!])(\w+)(@(\w+))?/);
+    const match = text.match(/^([/!])(\w+)(@(\w+))?/);
     if (!match) return;
 
     const [, , cmd, , username] = match;
