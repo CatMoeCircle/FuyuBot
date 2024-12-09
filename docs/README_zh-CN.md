@@ -20,6 +20,7 @@
 | MacOS    | ?(未测试)|
 
 关于MacOS，我们没有设备进行测试如果有问题请提Issue
+Termux请看 [Termux 部署指南](#termux)
 
 ---
 
@@ -60,12 +61,15 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
    npm run test
    ```
 
-#### **Termux**
-使用一键安装脚本进行一键安装，脚本会自动配置环境，然后启动服务。
+#### Termux
+使用安装脚本快速安装，脚本会自动配置环境，你只需要克隆项目，然后安装依赖包并启动。
+
 ```bash
 bash <(curl -sL https://github.com/xiaoqvan/shiny-journey-bot/raw/main/scripts/termux.sh)
 ```
+
 或者手动安装
+
 ```bash
 # 更新软件包列表
 pkg update && pkg upgrade

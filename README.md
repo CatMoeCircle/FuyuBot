@@ -20,6 +20,8 @@ A Telegram Bot project based on [GramJS](https://github.com/gram-js/gramjs), sup
 
 For MacOS, we do not have the equipment to test. If you encounter any issues, please submit an Issue.
 
+For Termux, please refer to the [Termux Deployment Guide](#termux)
+
 ---
 
 ## Deployment
@@ -59,7 +61,7 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
    ```
 
 #### **Termux**
-Use the one-click installation script for one-click installation. The script will automatically configure the environment and then start the service.
+Use the installation script for a quick setup. The script will automatically configure the environment. You just need to clone the project, install the dependencies, and start the service.
 ```bash
 bash <(curl -sL https://github.com/xiaoqvan/shiny-journey-bot/raw/main/scripts/termux.sh)
 ```
