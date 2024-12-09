@@ -1,7 +1,7 @@
 **cat acg Bot**
 ---
 
-[English](../README.md)
+[English](../README.md) | 简体中文
 
 
 ---
@@ -15,8 +15,11 @@
 | 平台       | 状态 |
 |----------|----|
 | Windows  | ✔  |
-| Termux  | ✔  |
+| Termux(Android)  | ✔  |
 | Linux   | ✔  |
+| MacOS    | ?(未测试)|
+
+关于MacOS，我们没有设备进行测试如果有问题请提Issue
 
 ---
 
@@ -66,26 +69,32 @@ bash <(curl -sL https://github.com/xiaoqvan/shiny-journey-bot/raw/main/scripts/t
 ```bash
 # 更新软件包列表
 pkg update && pkg upgrade
+
 # 安装需要的软件包
 pkg install x11-repo tur-repo
 pkg install chromium
-pkg install nodejs python3 setuptools binutils binutils-is-llvm git
+pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
+
 # 下载termux的Android NDK https://github.com/lzhiyong/termux-ndk
 curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
 unzip android-ndk-r27b-aarch64.zip
+
 # 配置NDK环境变量
 export GYP_DEFINES="android_ndk_path='$HOME/android-ndk-r27b'"
+
 # 克隆项目如果已经克隆则只需要进入项目目录
 git clone https://github.com/xiaoqvan/shiny-journey-bot.git
 cd shiny-journey-bot
+
 # 安装依赖包
 npm i
+
 # 启动服务
-npm run start
+npm run Test
 ```
 ---
 
-# 联系与支持
+# 联系与参与贡献
 
-如果在使用过程中有任何问题或改进建议，欢迎提交 Issue 或加入我们的群组进行讨论。  
-一起让 **Shiny Journey Bot** 更加完善！
+如果在使用过程中有任何问题或改进建议，欢迎提交 Issue 或 Pull Requests，加入我们的群组进行讨论。  
+一起让 **cat acg Bot** 更加完善！

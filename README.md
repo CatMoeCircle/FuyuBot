@@ -1,7 +1,7 @@
 **cat acg Bot**
 ---
 
-[中文](./docs/README_zh-CN.md)
+English | [简体中文](./docs/README_zh-CN.md)
 
 ---
 
@@ -14,8 +14,11 @@ A Telegram Bot project based on [GramJS](https://github.com/gram-js/gramjs), sup
 | Platform | Status |
 |----------|--------|
 | Windows  | ✔      |
-| Termux   | ✔      |
+| Termux(Android)   | ✔      |
 | Linux    | ✔      |
+| MacOS    | ❓ (Untested) |
+
+For MacOS, we do not have the equipment to test. If you encounter any issues, please submit an Issue.
 
 ---
 
@@ -27,7 +30,7 @@ A Telegram Bot project based on [GramJS](https://github.com/gram-js/gramjs), sup
 
 2. Create a Telegram Bot with [@BotFather](https://t.me/BotFather) to get the Bot Token.
 
-3. Install [Node.js](https://nodejs.org/), it is recommended to use the LTS (Long Term Support) version.
+3. Install [Node.js](https://nodejs.org/), it is recommended to use the LTS version.
 
 ### Clone the Project
 
@@ -64,26 +67,32 @@ Or install manually
 ```bash
 # Update package list
 pkg update && pkg upgrade
+
 # Install required packages
 pkg install x11-repo tur-repo
 pkg install chromium
 pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
+
 # Download Termux's Android NDK https://github.com/lzhiyong/termux-ndk
 curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
 unzip android-ndk-r27b-aarch64.zip
+
 # Configure NDK environment variables
 export GYP_DEFINES="android_ndk_path='$HOME/android-ndk-r27b'"
+
 # Clone the project, if already cloned, just enter the project directory
 git clone https://github.com/xiaoqvan/shiny-journey-bot.git
 cd shiny-journey-bot
+
 # Install dependencies
 npm i
+
 # Start the service
-npm run start
+npm run test
 ```
 ---
 
-# Contact and Support
+# Contact and Contribute
 
-If you have any questions or suggestions for improvement during use, feel free to submit an issue or join our group for discussion.  
-Let's make **Shiny Journey Bot** better together!
+If you encounter any issues or have suggestions for improvements while using the bot, feel free to submit an Issue or Pull Request. Join our group for discussions.  
+Let's make **cat acg Bot** even better together!
