@@ -2,6 +2,7 @@ import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { registerCommands } from "./cmd/index.js";
 import { loadPlugins } from "./plugins.js";
+import initI18n from "#i18next";
 import log from "#logger";
 import dotenv from "dotenv";
 import fs from "fs";
@@ -14,6 +15,7 @@ const apiHash = process.env.API_HASH;
 const botToken = process.env.BOT_TOKEN;
 
 export default async function start() {
+  const i18next = await initI18n();
   let cookie;
   try {
     cookie = yaml.load(fs.readFileSync("config/cookie.yaml", "utf-8"));
@@ -33,12 +35,12 @@ export default async function start() {
     botAuthToken: botToken,
     onError: (err) => log.error(`${err}`),
   });
-
-  log.info("[BOT]bot已连接");
+  log.info(i18next.t("log.bot_started"));
+  log.info(i18next.t("log.bot_connected"));
   if (botconfig.creator_id) {
     // client.sendMessage(botconfig.creator_id, { message: "bot已经上线" });
   } else {
-    log.warn("[BOT]未设置管理员ID前往 config/bot.yaml 设置");
+    log.warn(i18next.t("log.admin_id_not_set"));
   }
 
   // 登录成功后保存新的 session 到 cookie.yaml

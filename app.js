@@ -2,10 +2,12 @@ import loadConfig from "./core/config.js";
 import start from "./core/bot.js";
 import "./WebUI/web.js";
 import log from "#logger";
+import initI18n from "#i18next";
 
 (async () => {
+  const i18next = await initI18n();
   try {
-    log.info("[INIT] 生成配置文件...");
+    log.info(i18next.t("log.config_generating"));
 
     const load = await loadConfig();
     if (load === true) {
@@ -15,22 +17,26 @@ import log from "#logger";
 
       const initializeBot = async () => {
         try {
-          log.info("[INIT] 配置文件生成完毕，开始启动 bot...");
+          log.info(i18next.t("log.bot_starting"));
           await start();
-          log.info("[BOT] 启动成功！");
         } catch (err) {
           retryCount++;
           if (retryCount > maxRetries) {
             log.error(
-              `[BOT] 启动失败: ${err}，重试次数已达最大限制（${maxRetries} 次），停止重试。`
+              i18next.t("log.bot_start_failed_max_retries", {
+                error: err,
+                maxRetries: maxRetries,
+              })
             );
             return;
           }
 
           log.error(
-            `[BOT] 启动失败: ${err}，${
-              retryInterval / 1000
-            } 秒后尝试重启（第 ${retryCount} 次重试）...`
+            i18next.t("log.bot_start_failed_retry", {
+              error: err,
+              interval: retryInterval / 1000,
+              retryCount: retryCount,
+            })
           );
 
           setTimeout(initializeBot, retryInterval);
@@ -40,6 +46,6 @@ import log from "#logger";
       await initializeBot();
     }
   } catch (err) {
-    log.error(`[BOT] 启动失败: ${err}`);
+    log.error(i18next.t("log.bot_start_failed", { error: err }));
   }
 })();

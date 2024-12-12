@@ -1,0 +1,22 @@
+{
+  "log": {
+    "config_generating": "[INIT] Generating configuration file...",
+    "bot_starting": "[INIT] Configuration file generated, starting bot...",
+    "bot_started": "[BOT] Started successfully!",
+    "bot_start_failed_max_retries": "[BOT] Start failed: {{error}}, maximum retry limit reached ({{maxRetries}} attempts), stopping retries.",
+    "bot_start_failed_retry": "[BOT] Start failed: {{error}}, retrying in {{interval}} seconds (retry {{retryCount}})...",
+    "bot_start_failed": "[BOT] Start failed: {{error}}",
+    "bot_connected": "[BOT] Bot connected",
+    "admin_id_not_set": "[BOT] Admin ID not set, please set it in config/bot.yaml",
+    "plugin_reload_ready": "[PLUGIN] Plugin hot reload ready",
+    "plugin_loaded": "[PLUGIN] Plugin loaded: {{pluginName}}",
+    "plugin_loading": "[PLUGIN] Loading plugin: {{pluginName}}",
+    "plugin_load_complete": "[PLUGIN] Plugin load complete: {{pluginName}}",
+    "plugin_init_failed": "[PLUGIN] Plugin initialization failed: {{pluginName}} - {{initError.message}}",
+    "plugin_load_failed": "[PLUGIN] Plugin load failed: {{pluginName}} - {{error}}",
+    "plugin_reloading": "[PLUGIN] Reloading plugin: {{pluginName}}",
+    "plugin_unloading": "[PLUGIN] Unloading plugin: {{pluginName}}",
+    "plugin_unload_error": "[PLUGIN] Plugin unload error: {{pluginName}} - {{err.message}}",
+    "plugin_unload_complete": "[PLUGIN] Plugin unload complete: {{pluginName}}"
+  }
+}
