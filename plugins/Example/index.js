@@ -1,6 +1,5 @@
 // 接收新消息，判断命令，有则执行对应的命令
 // Receive new messages, check for commands, and execute corresponding commands if any
-import log from "#logger";
 import { NewMessage } from "telegram/events/index.js";
 
 // 必须export default一个函数，接收一个client参数
@@ -48,7 +47,8 @@ export default async function (client) {
         });
       }
     } catch (error) {
-      log.error(`[XQ-plugins]插件处理消息时出错: ${error}`);
+      console.log(error);
+
       // Log an error if there is an issue processing the message
     }
   };
