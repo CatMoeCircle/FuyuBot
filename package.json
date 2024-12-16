@@ -1,5 +1,5 @@
 {
-  "name": "shiny-journey",
+  "name": "fuyubot",
   "version": "0.0.1",
   "description": "telegram bot",
   "type": "module",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xiaoqvan/shiny-journey-bot.git"
+    "url": "git+https://github.com/CatMoeCircle/FuyuBot.git"
   },
   "author": "xiaoqvan",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/xiaoqvan/shiny-journey-bot/issues"
+    "url": "https://github.com/CatMoeCircle/FuyuBot/issues"
   },
-  "homepage": "https://github.com/xiaoqvan/shiny-journey-bot#readme",
+  "homepage": "https://github.com/CatMoeCircle/FuyuBot#readme",
   "dependencies": {
     "axios": "^1.7.7",
     "chokidar": "^4.0.1",

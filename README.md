@@ -1,4 +1,4 @@
-**cat acg Bot**
+**FuyuBot**
 ---
 
 English | [简体中文](./docs/README_zh-CN.md)
@@ -37,7 +37,7 @@ For Termux, please refer to the [Termux Deployment Guide](#termux)
 ### Clone the Project
 
 ```bash
-git clone https://github.com/xiaoqvan/shiny-journey-bot.git
+git clone https://github.com/CatMoeCircle/FuyuBot.git
 ```
 
 ### Configure API
@@ -63,7 +63,7 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
 #### **Termux**
 Use the installation script for a quick setup. The script will automatically configure the environment. You just need to clone the project, install the dependencies, and start the service.
 ```bash
-bash <(curl -sL https://github.com/xiaoqvan/shiny-journey-bot/raw/main/scripts/termux.sh)
+bash <(curl -sL https://github.com/CatMoeCircle/FuyuBot/raw/main/scripts/termux.sh)
 ```
 Or install manually
 ```bash
@@ -83,7 +83,7 @@ unzip android-ndk-r27b-aarch64.zip
 export GYP_DEFINES="android_ndk_path='$HOME/android-ndk-r27b'"
 
 # Clone the project, if already cloned, just enter the project directory
-git clone https://github.com/xiaoqvan/shiny-journey-bot.git
+git clone https://github.com/CatMoeCircle/FuyuBot.git
 cd shiny-journey-bot
 
 # Install dependencies
@@ -97,4 +97,4 @@ npm run test
 # Contact and Contribute
 
 If you encounter any issues or have suggestions for improvements while using the bot, feel free to submit an Issue or Pull Request. Join our group for discussions.  
-Let's make **cat acg Bot** even better together!
+Let's make **FuyuBot** even better together!
