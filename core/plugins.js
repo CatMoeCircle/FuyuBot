@@ -138,7 +138,25 @@ export async function pluginslist() {
   try {
     const pluginsDir = path.resolve(__dirname, "../plugins");
     const pluginFiles = await fs.promises.readdir(pluginsDir);
-    return pluginFiles;
+    const config = yaml.load(fs.readFileSync(configPath, "utf8")) || {};
+
+    // 检查并添加新插件
+    let configUpdated = false;
+    pluginFiles.forEach((pluginName) => {
+      if (config[pluginName] === undefined) {
+        config[pluginName] = true; // 默认启用新插件
+        configUpdated = true;
+      }
+    });
+
+    if (configUpdated) {
+      fs.writeFileSync(configPath, yaml.dump(config), "utf8");
+    }
+
+    return pluginFiles.map((pluginName) => {
+      const isEnabled = config[pluginName] ? "启用" : "禁用";
+      return `${pluginName} (${isEnabled})`;
+    });
   } catch (error) {
     console.error("读取插件目录时出错:", error);
     throw new Error("无法获取插件列表");

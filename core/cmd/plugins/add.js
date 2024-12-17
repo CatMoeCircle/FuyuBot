@@ -21,9 +21,7 @@ export async function plugin(client, event) {
       case "list":
         try {
           const pluginFiles = await pluginslist();
-          const responseMessage = pluginFiles
-            .map((plugin, index) => `${index + 1}. ${plugin}`)
-            .join("\n");
+          const responseMessage = pluginFiles.join("\n");
           await client.sendMessage(message.chatId, {
             replyTo: message.id,
             message: `插件列表:\n${responseMessage}`,
@@ -92,7 +90,6 @@ export async function plugin(client, event) {
         }
         break;
       default:
-        // 处理启用或禁用插件的命令
         if (enableOrDisable === "true" || enableOrDisable === "false") {
           try {
             const result = await toggleSwitch(
