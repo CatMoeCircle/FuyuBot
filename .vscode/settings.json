@@ -1,11 +1,15 @@
 {
     "eslint.validate": ["javascript", "javascriptreact"],
     "eslint.options": {
-      "overrideConfigFile": "eslint.config.js"
+      "overrideConfigFile": "eslint.config.mjs"
     },
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
       "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig"
     },
+    "i18n-ally.localesPaths": [
+      "i18n",
+      "i18n/lang"
+    ],
   }
   

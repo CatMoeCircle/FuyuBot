@@ -1,0 +1,36 @@
+{
+  "enter_api_id": "请输入API_ID：",
+  "enter_api_hash": "请输入API_HASH：",
+  "enter_phone_number": "请输入您的手机号码：",
+  "enter_verification_code": "请输入验证码：",
+  "enter_2fa_password": "请输入您的2FA密码：",
+  "login_choice": "您想以机器人还是用户身份登录？(bot/user): ",
+  "enter_bot_token": "请输入 BOT_TOKEN：",
+  "account_added_success": "账户添加成功！",
+  "enter_user_phone_number": "请输入手机号码：",
+  "invalid_phone_number_format": "无效的手机号码格式",
+  "existing_accounts": "现有账户：",
+  "authentication_error": "认证错误：",
+  "send_verification_code_failed": "发送验证码失败",
+  "verify_code_failed": "验证码验证失败",
+  "check_2fa_failed": "检查2FA状态失败",
+  "authenticate_2fa_failed": "2FA验证失败",
+  "invalid_api_id": "无效的 API_ID。请确保 API_ID 是数字。",
+  "invalid_api_hash": "无效的 API_HASH。请确保 API_HASH 是字符串。",
+  "enter_api_id_or_hash_not_found": "未找到 API_ID 或 API_HASH。",
+  "errors": {
+    "connection_failed": "连接失败，请检查您的网络。",
+    "authentication_failed": "认证失败，请检查您的凭证。",
+    "invalid_input": "输入无效，请重新尝试。"
+  },
+  "prompts": {
+    "confirm_exit": "您确定要退出吗？(yes/no): ",
+    "enter_message": "请输入您的消息："
+  },
+  "notifications": {
+    "login_success": "登录成功！",
+    "logout_success": "登出成功！",
+    "new_message": "您有新的消息。",
+    "hello": "你好！"
+  }
+}

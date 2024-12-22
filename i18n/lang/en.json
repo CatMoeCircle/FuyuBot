@@ -1,0 +1,36 @@
+{
+  "enter_api_id": "Enter API_ID:",
+  "enter_api_hash": "Enter API_HASH:",
+  "enter_phone_number": "Enter your phone number:",
+  "enter_verification_code": "Enter the verification code:",
+  "enter_2fa_password": "Enter your 2FA password:",
+  "login_choice": "Do you want to login as a bot or a user? (bot/user): ",
+  "enter_bot_token": "Enter the BOT_TOKEN: ",
+  "account_added_success": "Account added successfully!",
+  "enter_user_phone_number": "Enter the phone number:",
+  "invalid_phone_number_format": "Invalid phone number format",
+  "existing_accounts": "Existing accounts:",
+  "authentication_error": "Authentication error:",
+  "send_verification_code_failed": "Failed to send verification code",
+  "verify_code_failed": "Verification code failed",
+  "check_2fa_failed": "Failed to check 2FA status",
+  "authenticate_2fa_failed": "2FA authentication failed",
+  "invalid_api_id": "Invalid API_ID. Please ensure API_ID is a number.",
+  "invalid_api_hash": "Invalid API_HASH. Please ensure API_HASH is a string.",
+  "enter_api_id_or_hash_not_found": "API_ID or API_HASH not found.",
+  "errors": {
+    "connection_failed": "Connection failed, please check your network.",
+    "authentication_failed": "Authentication failed, please check your credentials.",
+    "invalid_input": "Invalid input, please try again."
+  },
+  "prompts": {
+    "confirm_exit": "Are you sure you want to exit? (yes/no): ",
+    "enter_message": "Please enter your message:"
+  },
+  "notifications": {
+    "login_success": "Logged in successfully!",
+    "logout_success": "Logged out successfully!",
+    "new_message": "You have a new message.",
+    "hello": "Hello!"
+  }
+}
