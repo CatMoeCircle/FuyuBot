@@ -84,7 +84,7 @@ export GYP_DEFINES="android_ndk_path='$HOME/android-ndk-r27b'"
 
 # Clone the project, if already cloned, just enter the project directory
 git clone https://github.com/CatMoeCircle/FuyuBot.git
-cd shiny-journey-bot
+cd FuyuBot
 
 # Install dependencies
 npm i
