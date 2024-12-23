@@ -1,26 +1,37 @@
-**FuyuBot**
+**Fuyu Bot**
 ---
 
-English | [简体中文](./docs/README_zh-CN.md)
+English |  [简体中文](./docs/README_zh-CN.md) | [Русский](.docs/README_RU.md)
 
 ---
 
-## Description:
+## Developing v2 Version
+Currently in progress. Some features are not yet implemented. Stay tuned!
+
+### Features
+- Multi-account login support
+- Support for bot and user account login
+- Improved plugin loading
+- Multi-language support
+- WEB management interface
+
+## Description
 
 A Telegram Bot project based on [GramJS](https://github.com/gram-js/gramjs), supporting user-defined plugins.
-***
+
+---
+
 ## Supported Platforms
 
-| Platform | Status |
-|----------|--------|
-| Windows  | ✔      |
-| Termux(Android)   | ✔      |
-| Linux    | ✔      |
-| MacOS    | ❓ (Untested) |
+| Platform       | Status |
+|----------------|--------|
+| Windows        | ✔      |
+| Termux(Android)| ✔      |
+| Linux          | ✔      |
+| MacOS          | ? (Untested)|
 
-For MacOS, we do not have the equipment to test. If you encounter any issues, please submit an Issue.
-
-For Termux, please refer to the [Termux Deployment Guide](#termux)
+For MacOS, we don't have the necessary hardware for testing. If you encounter any issues, please submit an issue.  
+For Termux, refer to the [Termux Deployment Guide](#termux).
 
 ---
 
@@ -28,46 +39,38 @@ For Termux, please refer to the [Termux Deployment Guide](#termux)
 
 ### Prerequisites
 
-1. Go to https://my.telegram.org/apps and register a new application to get the API ID and API Hash.
+1. Go to https://my.telegram.org/apps and register a new application to get your API ID and API Hash.
 
-2. Create a Telegram Bot with [@BotFather](https://t.me/BotFather) to get the Bot Token.
+2. Create a Telegram Bot via [@BotFather](https://t.me/BotFather) and get the Bot Token.
 
-3. Install [Node.js](https://nodejs.org/), it is recommended to use the LTS version.
+3. Install [Node.js](https://nodejs.org/), preferably the LTS (Long-Term Support) version.
 
 ### Clone the Project
 
 ```bash
 git clone https://github.com/CatMoeCircle/FuyuBot.git
 ```
-
 ### Configure API
 
-Create a `.env` file in the root directory of the project and add the following content:
+Navigate to the project root directory and create a .env file. Add the following content:
 
-```dotenv
+```env
 API_ID=123456  # Telegram API ID
-API_HASH=123456789abcdefghijklmn # Telegram API Hash
-BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
+API_HASH=123456789abcdefghijklmn  # Telegram API Hash
 ```
-
 ---
+### Start the Bot
 
-### Start
-
-#### Windows and Linux
-   ```bash
-   npm i
-   npm run test
-   ```
-
-#### **Termux**
-Use the installation script for a quick setup. The script will automatically configure the environment. You just need to clone the project, install the dependencies, and start the service.
+#### On Windows and Linux
 ```bash
-bash <(curl -sL https://github.com/CatMoeCircle/FuyuBot/raw/main/scripts/termux.sh)
+npm i
+npm run test
 ```
-Or install manually
+#### On Termux
+
+Manual installation and environment setup:
 ```bash
-# Update package list
+# Update the package list
 pkg update && pkg upgrade
 
 # Install required packages
@@ -75,26 +78,31 @@ pkg install x11-repo tur-repo
 pkg install chromium
 pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
 
-# Download Termux's Android NDK https://github.com/lzhiyong/termux-ndk
+# Download Android NDK for Termux: https://github.com/lzhiyong/termux-ndk
 curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
 unzip android-ndk-r27b-aarch64.zip
 
-# Configure NDK environment variables
+# Set up NDK environment variables
 export GYP_DEFINES="android_ndk_path='$HOME/android-ndk-r27b'"
 
-# Clone the project, if already cloned, just enter the project directory
+# Clone the project or navigate to the project directory if already cloned
 git clone https://github.com/CatMoeCircle/FuyuBot.git
 cd shiny-journey-bot
 
 # Install dependencies
 npm i
 
-# Start the service
+# Start the bot
 npm run test
 ```
+
 ---
 
-# Contact and Contribute
+# Contact and Contributions
 
-If you encounter any issues or have suggestions for improvements while using the bot, feel free to submit an Issue or Pull Request. Join our group for discussions.  
-Let's make **FuyuBot** even better together!
+If you encounter any issues or have suggestions for improvement, feel free to submit an Issue or Pull Request.
+Join our group [@xiaoqvan_chat](https://t.me/xiaoqvan_chat) to discuss and collaborate.
+Let's make FuyuBot better together!
+
+
+
