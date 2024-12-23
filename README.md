@@ -1,7 +1,7 @@
 **Fuyu Bot**
 ---
 
-English |  [简体中文](./docs/README_zh-CN.md) | [Русский](.docs/README_RU.md)
+English |  [简体中文](./docs/README_zh-CN.md) | [Русский](./docs/README_RU.md)
 
 ---
 
