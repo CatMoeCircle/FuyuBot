@@ -11,22 +11,22 @@ dotenv.config();
 // 检查并加载API_ID和API_HASH
 async function checkAndLoadEnv() {
   if (!process.env.API_ID || !process.env.API_HASH) {
-    console.log(i18next.t("enter_api_id_or_hash_not_found"));
+    console.log(i18next.t("tg_api.enter_api_id_or_hash_not_found"));
 
     const response = await prompts([
       {
         type: "number",
         name: "apiId",
-        message: i18next.t("enter_api_id"),
+        message: i18next.t("tg_api.enter_api_id"),
         validate: (value) =>
-          Number.isInteger(value) ? true : i18next.t("invalid_api_id"),
+          Number.isInteger(value) ? true : i18next.t("tg_api.invalid_api_id"),
       },
       {
         type: "text",
         name: "apiHash",
-        message: i18next.t("enter_api_hash"),
+        message: i18next.t("tg_api.enter_api_hash"),
         validate: (value) =>
-          value.trim() !== "" ? true : i18next.t("invalid_api_hash"),
+          value.trim() !== "" ? true : i18next.t("tg_api.invalid_api_hash"),
       },
     ]);
 

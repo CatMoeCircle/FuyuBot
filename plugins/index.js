@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import yaml from "js-yaml";
+import i18next from "../i18n/i18n.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +18,7 @@ function loadPluginConfig() {
     }
     return yaml.load(fs.readFileSync(pluginConfigPath, "utf8")) || {};
   } catch (error) {
-    console.error("读取插件配置失败:", error);
+    console.error(i18next.t("plugins.read_config_error", { error }));
     return {};
   }
 }
@@ -32,7 +33,7 @@ function savePluginConfig(config) {
       })
     );
   } catch (error) {
-    console.error("保存插件配置失败:", error);
+    console.error(i18next.t("plugins.save_config_error", { error }));
   }
 }
 
@@ -50,12 +51,17 @@ async function loadPluginInfo(pluginDir) {
 
     return { info, config };
   } catch (error) {
-    console.error(`读取插件信息失败: ${pluginDir}`, error);
+    console.error(
+      i18next.t("plugins.read_info_error", {
+        path: pluginDir,
+        error,
+      })
+    );
     return null;
   }
 }
 
-export function getPluginList() {
+function getPluginList() {
   const pluginList = [];
   loadedPlugins.forEach((plugin, name) => {
     pluginList.push({
@@ -68,49 +74,91 @@ export function getPluginList() {
   return pluginList;
 }
 
-export async function enablePlugin(pluginName) {
-  const plugin = loadedPlugins.get(pluginName);
-  if (!plugin) {
-    throw new Error(`插件 ${pluginName} 不存在`);
-  }
-  if (plugin.enabled) {
-    return false;
-  }
+function createPluginProxy(plugin, pluginName) {
+  return new Proxy(plugin, {
+    get(target, prop) {
+      const original = target[prop];
+      if (typeof original === "function") {
+        return async (...args) => {
+          try {
+            return await original.apply(target, args);
+          } catch (error) {
+            console.error(
+              i18next.t("plugins.execution_error", {
+                name: pluginName,
+                method: prop,
+                error,
+              })
+            );
 
-  if (typeof plugin.instance.enable === "function") {
-    await plugin.instance.enable();
-  }
-  plugin.enabled = true;
-
-  const config = loadPluginConfig();
-  config[pluginName] = true;
-  savePluginConfig(config);
-
-  return true;
+            return null;
+          }
+        };
+      }
+      return original;
+    },
+  });
 }
 
-export async function disablePlugin(pluginName) {
-  const plugin = loadedPlugins.get(pluginName);
-  if (!plugin) {
-    throw new Error(`插件 ${pluginName} 不存在`);
-  }
-  if (!plugin.enabled) {
+async function enablePlugin(pluginName) {
+  try {
+    const plugin = loadedPlugins.get(pluginName);
+    if (!plugin) {
+      throw new Error(i18next.t("plugins.not_found", { name: pluginName }));
+    }
+    if (plugin.enabled) {
+      return false;
+    }
+
+    await plugin.instance.enable?.();
+    plugin.enabled = true;
+
+    const config = loadPluginConfig();
+    config[pluginName] = true;
+    savePluginConfig(config);
+
+    return true;
+  } catch (error) {
+    console.error(
+      i18next.t("plugins.enable_error", {
+        name: pluginName,
+        error,
+      })
+    );
     return false;
   }
-
-  if (typeof plugin.instance.disable === "function") {
-    await plugin.instance.disable();
-  }
-  plugin.enabled = false;
-
-  const config = loadPluginConfig();
-  config[pluginName] = false;
-  savePluginConfig(config);
-
-  return true;
 }
 
-export async function loadPlugins() {
+async function disablePlugin(pluginName) {
+  try {
+    const plugin = loadedPlugins.get(pluginName);
+    if (!plugin) {
+      throw new Error(i18next.t("plugins.not_found", { name: pluginName }));
+    }
+    if (!plugin.enabled) {
+      return false;
+    }
+
+    await plugin.instance.disable?.();
+    plugin.enabled = false;
+
+    const config = loadPluginConfig();
+    config[pluginName] = false;
+    savePluginConfig(config);
+
+    return true;
+  } catch (error) {
+    console.error(
+      i18next.t("plugins.disable_error", {
+        name: pluginName,
+        error,
+      })
+    );
+    return false;
+  }
+}
+
+async function loadPlugins() {
   try {
     const pluginConfig = loadPluginConfig();
     const pluginDirs = fs
@@ -130,30 +178,64 @@ export async function loadPlugins() {
           }
 
           console.log(
-            `正在加载插件: ${pluginData.info.name} v${pluginData.info.version}`
+            i18next.t("plugins.loading", {
+              name: pluginData.info.name,
+              version: pluginData.info.version,
+            })
           );
 
           const plugin = await import(`file://${pluginPath}`);
 
-          const enabled = pluginConfig[pluginData.info.name] !== false; // 默认为true
-          loadedPlugins.set(pluginData.info.name, {
-            info: pluginData.info,
-            config: pluginData.config,
-            instance: plugin,
-            enabled: enabled,
-          });
+          const proxiedPlugin = createPluginProxy(plugin, pluginData.info.name);
 
-          if (typeof plugin.initialize === "function") {
-            await plugin.initialize(pluginData.config);
+          const pluginType = pluginData.info.type || "all";
+          const pluginName = pluginData.info.name;
+          if (pluginConfig[pluginName] === undefined) {
+            pluginConfig[pluginName] = true;
           }
 
-          console.log(`插件 ${pluginData.info.name} 加载成功！`);
+          loadedPlugins.set(pluginName, {
+            info: pluginData.info,
+            config: pluginData.config,
+            instance: proxiedPlugin,
+            type: pluginType,
+            enabled: pluginConfig[pluginName],
+          });
+
+          if (typeof proxiedPlugin.initialize === "function") {
+            await proxiedPlugin.initialize(pluginData.config);
+          }
+
+          console.log(
+            i18next.t("plugins.load_success", {
+              name: pluginData.info.name,
+            })
+          );
         } catch (error) {
-          console.error(`加载插件 ${dir} 失败:`, error);
+          console.error(
+            i18next.t("plugins.load_error", {
+              name: dir,
+              error,
+            })
+          );
         }
       }
     }
+    savePluginConfig(pluginConfig);
   } catch (error) {
-    console.error("加载插件时出错:", error);
+    console.error(
+      i18next.t("plugins.load_error", {
+        name: "unknown",
+        error,
+      })
+    );
   }
 }
+
+export {
+  loadPlugins,
+  getPluginList,
+  enablePlugin,
+  disablePlugin,
+  loadedPlugins,
+};

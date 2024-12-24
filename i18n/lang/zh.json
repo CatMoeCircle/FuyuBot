@@ -1,6 +1,38 @@
 {
-  "enter_api_id": "请输入API_ID：",
-  "enter_api_hash": "请输入API_HASH：",
+  "errors": {
+    "connection_failed": "连接失败，请检查您的网络。",
+    "authentication_failed": "认证失败，请检查您的凭证。",
+    "invalid_input": "输入无效，请重新尝试。",
+    "send_message_failed": "发送消息失败"
+  },
+  "prompts": {
+    "confirm_exit": "您确定要退出吗？(yes/no): ",
+    "enter_message": "请输入您的消息："
+  },
+  "notifications": {
+    "login_success": "登录成功！",
+    "logout_success": "登出成功！",
+    "new_message": "您有新的消息。",
+    "hello": "你好！"
+  },
+  "tg_api": {
+    "enter_api_id": "API_ID",
+    "enter_api_hash": "API_HASH",
+    "invalid_api_id": "无效的 API_ID。请确保 API_ID 是数字。",
+    "invalid_api_hash": "无效的 API_HASH。请确保 API_HASH 是字符串。",
+    "enter_api_id_or_hash_not_found": "未找到 API_ID 或 API_HASH。"
+  },
+  "multiAccount": {
+    "operation_cancelled": "操作已取消",
+    "token_empty": "未输入Token，程序退出",
+    "set_owner": "是否设置主人？",
+    "enter_owner": "请输入主人的用户名：",
+    "owner_empty": "用户名不能为空",
+    "owner_set": "主人已设置为：{{username}}",
+    "owner_not_set": "未设置主人",
+    "all_accounts_logged_in": "所有账户登录成功！",
+    "token_required": "Token不能为空"
+  },
   "enter_phone_number": "请输入您的手机号码：",
   "enter_verification_code": "请输入验证码：",
   "enter_2fa_password": "请输入您的2FA密码：",
@@ -14,23 +46,5 @@
   "send_verification_code_failed": "发送验证码失败",
   "verify_code_failed": "验证码验证失败",
   "check_2fa_failed": "检查2FA状态失败",
-  "authenticate_2fa_failed": "2FA验证失败",
-  "invalid_api_id": "无效的 API_ID。请确保 API_ID 是数字。",
-  "invalid_api_hash": "无效的 API_HASH。请确保 API_HASH 是字符串。",
-  "enter_api_id_or_hash_not_found": "未找到 API_ID 或 API_HASH。",
-  "errors": {
-    "connection_failed": "连接失败，请检查您的网络。",
-    "authentication_failed": "认证失败，请检查您的凭证。",
-    "invalid_input": "输入无效，请重新尝试。"
-  },
-  "prompts": {
-    "confirm_exit": "您确定要退出吗？(yes/no): ",
-    "enter_message": "请输入您的消息："
-  },
-  "notifications": {
-    "login_success": "登录成功！",
-    "logout_success": "登出成功！",
-    "new_message": "您有新的消息。",
-    "hello": "你好！"
-  }
+  "authenticate_2fa_failed": "2FA验证失败"
 }

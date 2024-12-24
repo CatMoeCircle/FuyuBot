@@ -1,25 +1,47 @@
-import { messageEmitter } from "./eventEmitter.js";
-import { registerBasicCommands } from "../commands/basic.js";
+import {
+  registerBasicCommands,
+  officialCommandHandlers,
+} from "../commands/basic.js";
+import { loadedPlugins } from "../plugins/index.js";
 
-// 注册基础命令
 registerBasicCommands();
 
-// 主消息处理器
-export async function handleNewMessage(event) {
-  const message = event.message;
-  const text = message.text || "";
-
-  // 添加消息类型识别
-  message.type = message.groupId ? "group" : "private";
-
+async function safeEventHandler(handler, event) {
   try {
-    if (text.startsWith("/")) {
-      const command = text.slice(1).toLowerCase();
-      messageEmitter.broadcast("command", { event, command });
-      return;
-    }
-    messageEmitter.broadcast("message", { event });
+    await handler(event);
   } catch (error) {
-    console.error("处理消息时出错：", error);
+    console.error(`事件处理错误:`, error);
+  }
+}
+
+export async function handleNewMessage(event) {
+  try {
+    if (event.message?.message?.startsWith("/")) {
+      const command = event.message.message.split(" ")[0].substring(1);
+      for (const handler of officialCommandHandlers) {
+        await safeEventHandler(handler, { event, command });
+      }
+    }
+
+    for (const [, plugin] of loadedPlugins.entries()) {
+      if (!plugin.enabled) continue;
+
+      // 包装消息处理
+      const handlers = plugin.instance.messageHandlers || [];
+      for (const handler of handlers) {
+        await safeEventHandler(handler, event);
+      }
+
+      // 包装命令处理
+      if (event.message?.message?.startsWith("/")) {
+        const command = event.message.message.split(" ")[0].substring(1);
+        const commandHandlers = plugin.instance.commandHandlers || [];
+        for (const handler of commandHandlers) {
+          await safeEventHandler(handler, { event, command });
+        }
+      }
+    }
+  } catch (error) {
+    console.error("消息处理主循环错误:", error);
   }
 }

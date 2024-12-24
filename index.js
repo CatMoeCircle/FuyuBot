@@ -13,6 +13,10 @@ async function startBot() {
   await loginMultipleAccounts();
   try {
     const owner = config.owner;
+    if (!owner) {
+      console.error("未设置主人账号。");
+      return;
+    }
     for (const client of clients) {
       try {
         await client.sendMessage(owner, { message: "你好，主人！" });
@@ -30,7 +34,7 @@ async function chooseLanguage() {
   const response = await prompts({
     type: "select",
     name: "language",
-    message: "请选择语言 / Please select language / Выберите язык:",
+    message: "Please select language:",
     choices: [
       { title: "简体中文", value: "zh" },
       { title: "English", value: "en" },

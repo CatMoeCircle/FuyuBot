@@ -4,7 +4,8 @@
     "login_failed": "Ошибка входа в систему:",
     "missing_env": "Отсутствует файл конфигурации .env",
     "authentication_failed": "Ошибка аутентификации, проверьте учетные данные.",
-    "invalid_input": "Неверный ввод, попробуйте еще раз."
+    "invalid_input": "Неверный ввод, попробуйте еще раз.",
+    "send_message_failed": "Не удалось отправить сообщение"
   },
   "success": {
     "login_success": "Успешный вход в систему!",
@@ -22,8 +23,13 @@
     "new_message": "У вас новое сообщение.",
     "hello": "Привет!"
   },
-  "enter_api_id": "Введите API_ID:",
-  "enter_api_hash": "Введите API_HASH:",
+  "tg_api": {
+    "enter_api_id": "Введите API_ID:",
+    "enter_api_hash": "Введите API_HASH:",
+    "invalid_api_id": "Неверный API_ID. API_ID должен быть числом.",
+    "invalid_api_hash": "Неверный API_HASH. API_HASH должен быть строкой.",
+    "enter_api_id_or_hash_not_found": "API_ID или API_HASH не найден."
+  },
   "enter_phone_number": "Введите номер телефона:",
   "enter_verification_code": "Введите код подтверждения:",
   "enter_2fa_password": "Введите пароль 2FA:",
@@ -38,7 +44,15 @@
   "verify_code_failed": "Ошибка проверки кода",
   "check_2fa_failed": "Ошибка проверки 2FA",
   "authenticate_2fa_failed": "Ошибка аутентификации 2FA",
-  "invalid_api_id": "Неверный API_ID. API_ID должен быть числом.",
-  "invalid_api_hash": "Неверный API_HASH. API_HASH должен быть строкой.",
-  "enter_api_id_or_hash_not_found": "API_ID или API_HASH не найден."
+  "multiAccount": {
+    "operation_cancelled": "Операция отменена",
+    "token_empty": "Токен не введен, выход",
+    "set_owner": "Хотите установить владельца?",
+    "enter_owner": "Введите имя пользователя владельца:",
+    "owner_empty": "Имя пользователя не может быть пустым",
+    "owner_set": "Владелец установлен: {{username}}",
+    "owner_not_set": "Владелец не установлен",
+    "all_accounts_logged_in": "Все аккаунты успешно вошли в систему!",
+    "token_required": "Требуется токен"
+  }
 }

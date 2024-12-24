@@ -8,13 +8,14 @@ import { fileURLToPath } from "url";
 import i18next from "../i18n/i18n.js";
 import prompts from "prompts";
 import { handleNewMessage } from "../api/eventHandler.js";
-import { loadPlugins } from "../plugins/index.js";
+import { loadPlugins, loadedPlugins } from "../plugins/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const configPath = path.join(__dirname, "..", "config", "botConfig.yaml");
 let config = yaml.load(fs.readFileSync(configPath, "utf8"));
+config.accounts = config.accounts || [];
 
 const clients = [];
 
@@ -40,7 +41,7 @@ async function loginMultipleAccounts() {
         ],
         {
           onCancel: () => {
-            console.log("操作已取消");
+            console.log(i18next.t("multiAccount.operation_cancelled"));
             process.exit(0);
           },
         }
@@ -56,18 +57,19 @@ async function loginMultipleAccounts() {
             type: "text",
             name: "token",
             message: i18next.t("enter_bot_token"),
-            validate: (value) => value.length > 0 || "Token不能为空",
+            validate: (value) =>
+              value.length > 0 || i18next.t("multiAccount.token_required"),
           },
           {
             onCancel: () => {
-              console.log("操作已取消");
+              console.log(i18next.t("multiAccount.operation_cancelled"));
               process.exit(0);
             },
           }
         );
 
         if (!botResponse.token) {
-          console.log("未输入Token，程序退出");
+          console.log(i18next.t("multiAccount.token_empty"));
           process.exit(0);
         }
 
@@ -106,12 +108,12 @@ async function loginMultipleAccounts() {
         {
           type: "confirm",
           name: "setOwner",
-          message: "是否设置主人？",
+          message: i18next.t("multiAccount.set_owner"),
           initial: true,
         },
         {
           onCancel: () => {
-            console.log("操作已取消");
+            console.log(i18next.t("multiAccount.operation_cancelled"));
             process.exit(0);
           },
         }
@@ -121,12 +123,13 @@ async function loginMultipleAccounts() {
           {
             type: "text",
             name: "ownerUsername",
-            message: "请输入主人的用户名：",
-            validate: (value) => value.length > 0 || "用户名不能为空",
+            message: i18next.t("multiAccount.enter_owner"),
+            validate: (value) =>
+              value.length > 0 || i18next.t("multiAccount.owner_empty"),
           },
           {
             onCancel: () => {
-              console.log("操作已取消");
+              console.log(i18next.t("multiAccount.operation_cancelled"));
               process.exit(0);
             },
           }
@@ -135,10 +138,14 @@ async function loginMultipleAccounts() {
         if (ownerUsernameResponse.ownerUsername) {
           config.owner = ownerUsernameResponse.ownerUsername;
           fs.writeFileSync(configPath, yaml.dump(config));
-          console.log("主人已设置为：", ownerUsernameResponse.ownerUsername);
+          console.log(
+            i18next.t("multiAccount.owner_set", {
+              username: ownerUsernameResponse.ownerUsername,
+            })
+          );
         }
       } else {
-        console.log("未设置主人");
+        console.log(i18next.t("multiAccount.owner_not_set"));
       }
       const client = await login({ phone: phone, token: token, Bot: Bot });
       clients.push(client);
@@ -148,10 +155,23 @@ async function loginMultipleAccounts() {
         accounts: String(accounts.length + 1),
         firstName: info.firstName,
         lastName: info.lastName,
-        id: info.id,
+        id: Number(info.id),
         username: info.username,
         types: Bot ? "bot" : "user",
         stringSession: client.session.save(),
+        // 初始化插件配置
+        plugins: Array.from(loadedPlugins.entries()).reduce(
+          (acc, [name, plugin]) => {
+            // 根据插件类型和账户类型决定默认值
+            const supported =
+              plugin.type === "all" ||
+              (Bot && plugin.type === "bot") ||
+              (!Bot && plugin.type === "user");
+            acc[name] = supported ? true : false;
+            return acc;
+          },
+          {}
+        ),
       };
 
       accounts.push(account);
@@ -160,14 +180,34 @@ async function loginMultipleAccounts() {
       fs.writeFileSync(configPath, yaml.dump(config));
     } else {
       for (const account of accounts) {
-        const { types, stringSession } = account;
+        // 检查并添加缺失的插件配置
+        if (!account.plugins) {
+          account.plugins = {};
+        }
+
+        // 更新现有账户的插件配置
+        const isBot = account.types === "bot";
+        loadedPlugins.forEach((plugin, name) => {
+          if (account.plugins[name] === undefined) {
+            const supported =
+              plugin.type === "all" ||
+              (isBot && plugin.type === "bot") ||
+              (!isBot && plugin.type === "user");
+            account.plugins[name] = supported ? true : false;
+          }
+        });
+
+        const { types, stringSession, plugins } = account;
         const Bot = types === "bot";
         const client = await login({ stringSession: stringSession, Bot: Bot });
         clients.push(client);
 
+        // 根据账户类型与 plugins 中的设置，启用或禁用对应插件
         client.addEventHandler(handleNewMessage, new NewMessage({}));
       }
-      console.log(i18next.t("all_accounts_logged_in"));
+
+      fs.writeFileSync(configPath, yaml.dump(config));
+      console.log(i18next.t("multiAccount.all_accounts_logged_in"));
     }
   } catch (error) {
     console.error(i18next.t("authentication_error"), error.message);

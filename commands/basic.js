@@ -1,7 +1,5 @@
-import { messageEmitter } from "../api/eventEmitter.js";
-
-export function registerBasicCommands() {
-  messageEmitter.on("command", async ({ event, command }) => {
+export const officialCommandHandlers = [
+  async ({ event, command }) => {
     try {
       const messageFunc =
         event.message.type === "private"
@@ -11,7 +9,7 @@ export function registerBasicCommands() {
       switch (command) {
         case "help":
           await messageFunc({
-            message: `可用命令列表：
+            message: `命令列表：
 /help - 显示此帮助信息
 /hello - 打个招呼 
 /time - 显示当前时间
@@ -37,7 +35,7 @@ export function registerBasicCommands() {
           break;
       }
     } catch (error) {
-      console.error("处理命令时出错：", error);
+      console.error("处理官方命令时出错：", error);
     }
-  });
-}
+  },
+];
