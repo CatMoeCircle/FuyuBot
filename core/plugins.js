@@ -38,6 +38,11 @@ export const loadPlugins = async (client) => {
 
 async function checkAndSyncPlugins() {
   const pluginsDir = path.resolve(__dirname, "../plugins");
+
+  if (!fs.existsSync(configPath)) {
+    fs.writeFileSync(configPath, yaml.dump({}), "utf8");
+  }
+
   const pluginFiles = await fs.promises.readdir(pluginsDir);
   const config = yaml.load(fs.readFileSync(configPath, "utf8")) || {};
 
