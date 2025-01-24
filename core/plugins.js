@@ -20,6 +20,8 @@ export const loadPlugins = async (client) => {
   const i18next = await initI18n();
   const pluginsDir = path.resolve(__dirname, "../plugins");
 
+  await checkAndSyncPlugins();
+
   const watcher = chokidar.watch(pluginsDir, {
     ignored: /(^|[/\\])\../,
     persistent: true,
@@ -33,6 +35,24 @@ export const loadPlugins = async (client) => {
     .on("change", (filePath) => handleFileChange(filePath, client, i18next))
     .on("unlink", (filePath) => unloadPlugin(filePath, client, i18next));
 };
+
+async function checkAndSyncPlugins() {
+  const pluginsDir = path.resolve(__dirname, "../plugins");
+  const pluginFiles = await fs.promises.readdir(pluginsDir);
+  const config = yaml.load(fs.readFileSync(configPath, "utf8")) || {};
+
+  let configUpdated = false;
+  pluginFiles.forEach((pluginName) => {
+    if (config[pluginName] === undefined) {
+      config[pluginName] = true;
+      configUpdated = true;
+    }
+  });
+
+  if (configUpdated) {
+    fs.writeFileSync(configPath, yaml.dump(config), "utf8");
+  }
+}
 
 function handleFileChange(filePath, client, i18next) {
   const pluginsBasePath = path.resolve(__dirname, "../plugins");
@@ -134,6 +154,7 @@ function unloadPlugin(filePath, client, i18next) {
     log.info(i18next.t("log.plugin_unload_complete", { pluginName }));
   }
 }
+
 export async function pluginslist() {
   try {
     const pluginsDir = path.resolve(__dirname, "../plugins");
@@ -162,6 +183,7 @@ export async function pluginslist() {
     throw new Error("无法获取插件列表");
   }
 }
+
 export async function unplugin(pluginName) {
   return new Promise((resolve, reject) => {
     const pluginDir = path.resolve(__dirname, "../plugins", pluginName);
@@ -186,6 +208,7 @@ export async function unplugin(pluginName) {
     });
   });
 }
+
 export async function addPlugin(gitUrl) {
   return new Promise((resolve, reject) => {
     const match = gitUrl.match(/github\.com\/([^/]+)\/([^/]+)\.git/);
@@ -219,6 +242,7 @@ export async function addPlugin(gitUrl) {
     });
   });
 }
+
 export async function toggleSwitch(pluginName, enable, client, i18next) {
   try {
     const config = yaml.load(fs.readFileSync(configPath, "utf8")) || {};
