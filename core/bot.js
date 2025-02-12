@@ -2,6 +2,8 @@ import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { registerCommands } from "./cmd/index.js";
 import { loadPlugins } from "./plugins.js";
+import { event } from "./api/event.js";
+
 import initI18n from "#i18next";
 import log from "#logger";
 import dotenv from "dotenv";
@@ -48,5 +50,6 @@ export default async function start() {
   fs.writeFileSync("config/cookie.yaml", yaml.dump(cookie));
 
   registerCommands(client);
+  event(client);
   loadPlugins(client);
 }

@@ -7,5 +7,8 @@
     "explorer.fileNesting.patterns": {
       "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig"
     },
+    "i18n-ally.localesPaths": [
+      "core/lang"
+    ],
   }
   
