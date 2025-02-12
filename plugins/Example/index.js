@@ -1,4 +1,4 @@
-import { eventupdate } from "../../core/api/event";
+import { eventupdate } from "../../core/api/event.js";
 
 export default async (client) => {
   eventupdate.on("CommandMessage", async (message) => {
