@@ -5,7 +5,7 @@ export const eventupdate = new EventEmitter();
 
 export const event = async (client) => {
   client.addEventHandler(async (event) => {
-    eventupdate.emit("AllNewMessage", event.message);
+    eventupdate.emit("AllNewMessage", event);
     const message = event.message;
     const text = message.message;
     if (!text) return;
@@ -21,7 +21,7 @@ export const event = async (client) => {
         const targetBot = commandParts[1]; // 获取@后面的用户名，如果没有则为undefined
         // 如果没有指定目标机器人或者指定了当前机器人
         if (!targetBot || targetBot === botUsername) {
-          eventupdate.emit("CommandMessage", event.message);
+          eventupdate.emit("CommandMessage", event);
         }
       }
     }

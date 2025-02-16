@@ -63,7 +63,7 @@ async function loadPlugin(filePath, client, i18next) {
   try {
     const fileUrl = pathToFileURL(filePath).href;
     const plugin = await import(fileUrl);
-    log.info(i18next.t("log.plugin_loading", { pluginName }));
+    log.debug(i18next.t("log.plugin_loading", { pluginName }));
 
     if (typeof plugin.default === "function") {
       const result = await plugin.default(client);
@@ -71,7 +71,7 @@ async function loadPlugin(filePath, client, i18next) {
       if (result && result.handler) {
         handlers.set(filePath, result.handler);
       }
-      log.debug(i18next.t("log.plugin_load_complete", { pluginName }));
+      log.info(i18next.t("log.plugin_load_complete", { pluginName }));
     }
   } catch (err) {
     log.error(
@@ -171,8 +171,6 @@ export async function toggleSwitch(pluginName, enable, client, i18next) {
     );
     if (enable) {
       await loadPlugin(pluginDir, client, i18next);
-    } else {
-      unloadPlugin(pluginDir, client, i18next);
     }
 
     return `插件 '${pluginName}' 已被${enable ? "启用" : "禁用"}`;

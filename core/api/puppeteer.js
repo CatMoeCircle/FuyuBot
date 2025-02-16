@@ -4,6 +4,7 @@ import { join } from "path";
 import os from "os";
 import { execSync } from "child_process";
 import log from "#logger";
+import UserAgent from "user-agents";
 
 let executablePath;
 // Termux自动获取chromium-browser
@@ -121,5 +122,22 @@ const deleteImage = async (filePath) => {
     throw error;
   }
 };
-
-export { genImage, deleteImage };
+const gethtml = async (url, Headers, devicey = "desktop") => {
+  try {
+    const browser = await puppeteer.launch({ executablePath, headless: "new" });
+    const page = await browser.newPage();
+    // 设置浏览器伪装请求头
+    await page.setUserAgent(
+      new UserAgent({ deviceCategory: devicey }).toString()
+    );
+    // 模拟浏览器访问
+    await page.goto(url, { waitUntil: "networkidle2" });
+    const pageContent = await page.content();
+    await browser.close();
+    return pageContent;
+  } catch (error) {
+    log.error(`Error generating screenshot: ${error}`);
+    throw error;
+  }
+};
+export { genImage, deleteImage, gethtml };
