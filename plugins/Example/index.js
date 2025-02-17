@@ -5,7 +5,7 @@ export default async (client) => {
     const message = event.message;
     const text = message.message;
 
-    if (text.startsWith("/help")) {
+    if (text.startsWith("/example")) {
       client.sendMessage(message.chatId, {
         replyTo: message.id,
         message: "Hello, World!",

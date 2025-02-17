@@ -1,6 +1,11 @@
 import { EventEmitter } from "events";
 import { TelegramClient } from "telegram";
 
+/**
+ * Message event handler
+ * @event AllNewMessage - Emitted for all new messages
+ * @event CommandMessage - Emitted for command messages starting with "/"
+ */
 export const eventupdate = new EventEmitter();
 
 export const event = async (client) => {

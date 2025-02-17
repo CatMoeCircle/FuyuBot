@@ -5,6 +5,7 @@ import yaml from "js-yaml";
 import log from "#logger";
 import fs from "fs";
 import { exec } from "child_process";
+import { NodeVM } from "vm2";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -51,6 +52,7 @@ async function checkAndSyncPlugins() {
   }
 }
 
+// 修改 loadPlugin 函数，将插件在 VM2 沙箱环境中加载
 async function loadPlugin(filePath, client, i18next) {
   const pluginName = path.basename(path.dirname(filePath));
   const config = yaml.load(fs.readFileSync(configPath, "utf8")) || {};
@@ -61,8 +63,34 @@ async function loadPlugin(filePath, client, i18next) {
   }
 
   try {
-    const fileUrl = pathToFileURL(filePath).href;
-    const plugin = await import(fileUrl);
+    // 使用 VM2 创建沙箱环境，加载插件代码
+    const vm = new NodeVM({
+      console: "inherit",
+      sandbox: {},
+      require: {
+        external: true,
+        builtin: ["*"],
+        root: path.dirname(filePath),
+      },
+    });
+    let plugin;
+    try {
+      plugin = vm.require(filePath);
+    } catch (vmErr) {
+      if (vmErr.message && vmErr.message.includes("ES Module")) {
+        // 使用动态 import 加载 ES Module 插件
+        const fileUrl = pathToFileURL(filePath).href;
+        plugin = await import(fileUrl);
+      } else {
+        log.error(
+          i18next.t("log.plugin_load_failed", {
+            pluginName,
+            error: vmErr.message,
+          })
+        );
+        return;
+      }
+    }
     log.debug(i18next.t("log.plugin_loading", { pluginName }));
 
     if (typeof plugin.default === "function") {
@@ -128,6 +156,10 @@ export async function addPlugin(gitUrl) {
       return;
     }
     const match = gitUrl.match(/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?$/);
+    if (!match || !match[2]) {
+      reject(new Error("无效的 GitHub 仓库地址格式"));
+      return;
+    }
     const repoName = match[2];
     const pluginDir = path.resolve(__dirname, "../plugins", repoName);
 

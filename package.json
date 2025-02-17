@@ -1,6 +1,6 @@
 {
   "name": "fuyubot",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "description": "telegram bot",
   "type": "module",
   "main": "app.js",
@@ -19,20 +19,22 @@
   },
   "homepage": "https://github.com/CatMoeCircle/FuyuBot#readme",
   "dependencies": {
-    "axios": "^1.7.7",
-    "chokidar": "^4.0.1",
-    "dotenv": "^16.4.5",
+    "axios": "^1.7.9",
+    "chokidar": "^4.0.3",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "i18next": "^24.1.0",
+    "i18next": "^24.2.2",
     "i18next-fs-backend": "^2.6.0",
     "js-yaml": "^4.1.0",
     "node-fetch": "^3.3.2",
-    "pino": "^9.5.0",
+    "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",
     "puppeteer-core": "^23.9.0",
-    "telegram": "^2.26.8",
+    "socks-proxy-agent": "^8.0.5",
+    "telegram": "^2.26.22",
     "user-agents": "^1.1.369",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vm2": "^3.9.19"
   },
   "imports": {
     "#logger": "./core/log.js",

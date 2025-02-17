@@ -1,7 +1,7 @@
 export async function Start(client, event) {
   const message = event.message;
   const text =
-    "欢迎使用 Cat☆acg BOT\n<a href='https://github.com/moecatacg/cat-acg'>Github</a>";
+    "欢迎使用 FuyuBot\n<a href='https://github.com/CatMoeCircle/FuyuBot'>Github</a>";
   if (message.peerId?.className === "PeerUser") {
     const sentMessage = await client.sendMessage(message.chatId, {
       message: text,
