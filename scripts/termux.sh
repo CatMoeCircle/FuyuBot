@@ -2,23 +2,6 @@
 
 echo "开始执行操作..."
 
-# 检查是否使用国内源
-echo "是否切换到国内源? [y/n]"
-read -p "请输入选项: " choice
-
-case "$choice" in
-    y|Y)
-        echo "正在切换到国内源..."
-        sed -i 's@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/termux-packages-24 stable main@' $PREFIX/etc/apt/sources.list
-        echo "更新软件包列表..."
-        apt update && apt upgrade -y || { echo "更新失败"; exit 1; }
-        ;;
-    *)
-        echo "跳过切换源，直接更新..."
-        apt update && apt upgrade -y || { echo "更新失败"; exit 1; }
-        ;;
-esac
-
 # 安装 curl 和 unzip
 echo "检查并安装必需工具 curl 和 unzip..."
 pkg i curl unzip -y || { echo "安装失败"; exit 1; }
@@ -82,4 +65,18 @@ pkg install build-essential -y || { echo "安装失败"; exit 1; }
 echo "安装 SQLite3..."
 npm install sqlite3 || { echo "安装失败"; exit 1; }
 
-echo "所有操作已完成！"
+echo "环境配置操作已完成！"
+
+echo "开始执行克隆操作..."
+
+echo "正在克隆 FuyuBot 请稍候..."
+
+git clone https://github.com/CatMoeCircle/FuyuBot.git || { echo "克隆失败"; exit 1; }
+
+echo "克隆完成！"
+
+cd FuyuBot
+
+echo "正在为您配置环境..."
+npm install || { echo "安装依赖失败"; exit 1; }
+echo "环境配置完成！"
