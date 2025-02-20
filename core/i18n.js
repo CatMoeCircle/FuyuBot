@@ -12,10 +12,10 @@ const initI18n = async () => {
     backend: {
       loadPath: path.join(__dirname, "./lang/{{lng}}.json"),
     },
-    fallbackLng: "zh-cn", // 默认语言
-    preload: ["en-us", "zh-cn"], // 预加载语言
-    supportedLngs: ["en-us", "zh-cn"], // 明确支持的语言
-    lowerCaseLng: true, // 使用小写语言代码
+    fallbackLng: "zh-cn",
+    preload: ["en-us", "zh-cn"],
+    supportedLngs: ["en-us", "zh-cn"],
+    lowerCaseLng: true,
   });
 
   return i18next;

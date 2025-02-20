@@ -32,7 +32,7 @@ For Termux, please refer to the [Termux Deployment Guide](#termux)
 
 2. Create a Telegram Bot with [@BotFather](https://t.me/BotFather) to get the Bot Token.
 
-3. Install [Node.js](https://nodejs.org/), it is recommended to use the LTS version.
+3. Install [Node.js](https://nodejs.org/) version 18.20.6 or higher.
 
 ### Clone the Project
 
@@ -72,7 +72,7 @@ pkg update && pkg upgrade
 
 # Install required packages
 pkg install x11-repo tur-repo
-pkg install chromium
+pkg install chromium-browser
 pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
 
 # Download Termux's Android NDK https://github.com/lzhiyong/termux-ndk

@@ -1,29 +1,19 @@
-import puppeteer from "puppeteer-core";
+import os from "os";
+let puppeteer;
+if (os.platform() === "android") {
+  puppeteer = await import("puppeteer-core");
+} else {
+  puppeteer = await import("puppeteer");
+}
+
 import { mkdir, unlink } from "fs/promises";
 import { join } from "path";
-import os from "os";
 import { execSync } from "child_process";
 import log from "#logger";
 import UserAgent from "user-agents";
 
 let executablePath;
-// Termux自动获取chromium-browser
 if (os.platform() === "android") {
-  try {
-    executablePath = execSync("which chromium-browser").toString().trim();
-    if (!executablePath) {
-      throw new Error("chromium-browser not found in PATH");
-    }
-  } catch (error) {
-    log.error(`Error getting chromium-browser path: ${error.message}`);
-    throw error;
-  }
-  // Windows默认使用edge的路径
-} else if (os.platform() === "win32") {
-  executablePath =
-    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
-  //Linux
-} else if (os.platform() === "linux") {
   try {
     executablePath = execSync("which chromium-browser").toString().trim();
     if (!executablePath) {
@@ -37,6 +27,11 @@ if (os.platform() === "android") {
 
 const outputDir = "./caching/puppeteer";
 
+/**
+ * Ensures that a directory exists, creating it if necessary
+ * @param {string} dir - Directory path to check/create
+ * @returns {Promise<void>}
+ */
 const ensureDirectoryExists = async (dir) => {
   try {
     await mkdir(dir, { recursive: true });
@@ -57,13 +52,19 @@ const retryFunction = async (fn, retries = 3, delay = 1000) => {
       if (attempt >= retries) {
         throw new Error(`Failed after ${retries} attempts`);
       }
-      // 延迟再试
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 };
-
-// 图片生成
+/**
+ * Generate webpage screenshot
+ * @param {string} htmlContent - HTML content to render
+ * @param {Object} viewport - Viewport configuration
+ * @param {number} viewport.width - Viewport width, default 800
+ * @param {number} viewport.height - Viewport height, default 600
+ * @param {number} [viewport.deviceScaleFactor] - Device scale factor
+ * @returns {Promise<string>} Generated image file path
+ */
 const genImage = async (
   htmlContent,
   viewport = { width: 800, height: 600 }
@@ -82,16 +83,13 @@ const genImage = async (
       const page = await browser.newPage();
       await page.setViewport(viewport);
 
-      // 等待页面加载并设置内容
       await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-      // 确保目录存在
       await ensureDirectoryExists(outputDir);
 
       const fileName = `screenshot-${Date.now()}.png`;
       const outputPath = join(outputDir, fileName);
 
-      // 截图并保存
       await page.screenshot({ path: outputPath });
       await page.close();
 
@@ -113,7 +111,10 @@ const genImage = async (
   return await retryFunction(generateScreenshot);
 };
 
-// 删除图片
+/**
+ *
+ * @param {string} filePath - file path
+ */
 const deleteImage = async (filePath) => {
   try {
     await unlink(filePath);
@@ -122,15 +123,22 @@ const deleteImage = async (filePath) => {
     throw error;
   }
 };
-const gethtml = async (url, Headers, devicey = "desktop") => {
+/**
+ * Fetches HTML content from a URL using a specified device type and headers
+ * @param {string} url - URL to fetch content from
+ * @param {string} devicey - Device type ('desktop' or 'mobile'), default 'desktop'
+ * @returns {Promise<string>} HTML content of the page
+ * @throws {Error} If fetching fails
+ */
+const gethtml = async (url, devicey = "desktop") => {
   try {
     const browser = await puppeteer.launch({ executablePath, headless: "new" });
     const page = await browser.newPage();
-    // 设置浏览器伪装请求头
+
     await page.setUserAgent(
       new UserAgent({ deviceCategory: devicey }).toString()
     );
-    // 模拟浏览器访问
+
     await page.goto(url, { waitUntil: "networkidle2" });
     const pageContent = await page.content();
     await browser.close();

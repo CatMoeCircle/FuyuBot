@@ -5,7 +5,8 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "test": "node app.js",
+    "start": "node app.js",
+    "dev": "node app.js --watch",
     "lint": "eslint ."
   },
   "repository": {
@@ -41,9 +42,17 @@
     "#puppeteer": "./core/api/puppeteer.js",
     "#i18next": "./core/i18n.js"
   },
+  "optionalDependencies": {
+    "puppeteer": "^23.9.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
     "eslint": "^9.16.0",
     "globals": "^15.13.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "puppeteer"
+    ]
   }
 }

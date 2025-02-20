@@ -3,7 +3,7 @@ import pretty from "pino-pretty";
 
 const log = pino(
   {
-    level: "info", // 日志级别
+    level: "info",
   },
   pretty({
     colorize: true,

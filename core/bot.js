@@ -39,13 +39,10 @@ export default async function start() {
   });
   log.info(i18next.t("log.bot_started"));
   log.info(i18next.t("log.bot_connected"));
-  if (botconfig.creator_id) {
-    // client.sendMessage(botconfig.creator_id, { message: "bot已经上线" });
-  } else {
+  if (!botconfig.creator_id) {
     log.warn(i18next.t("log.admin_id_not_set"));
   }
 
-  // 登录成功后保存新的 session 到 cookie.yaml
   cookie.stringSession = client.session.save();
   fs.writeFileSync("config/cookie.yaml", yaml.dump(cookie));
 

@@ -32,7 +32,7 @@ Termux请看 [Termux 部署指南](#termux)
 
 2. [@BotFather](https://t.me/BotFather) 创建一个 Telegram Bot，获得 Bot Token。
 
-3. 安装 [Node.js](https://nodejs.org/) 推荐使用 LTS(长期支持) 版本。
+3. 安装 [Node.js](https://nodejs.org/) 18.20.6 或更高版本。
 
 ### 克隆项目
 
@@ -76,7 +76,7 @@ pkg update && pkg upgrade
 
 # 安装需要的软件包
 pkg install x11-repo tur-repo
-pkg install chromium
+pkg install chromium-browser
 pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
 
 # 下载termux的Android NDK https://github.com/lzhiyong/termux-ndk
