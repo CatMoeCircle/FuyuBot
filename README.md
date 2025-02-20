@@ -57,7 +57,7 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
 #### Windows and Linux
    ```bash
    npm i
-   npm run test
+   npm run start
    ```
 
 #### **Termux**
@@ -90,7 +90,7 @@ cd FuyuBot
 npm i
 
 # Start the service
-npm run test
+npm run start
 ```
 ---
 
