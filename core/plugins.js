@@ -5,7 +5,6 @@ import yaml from "js-yaml";
 import log from "#logger";
 import fs from "fs";
 import { exec } from "child_process";
-import { NodeVM } from "vm2";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,33 +62,18 @@ async function loadPlugin(filePath, client, i18next) {
   }
 
   try {
-    // 使用 VM2 创建沙箱环境，加载插件代码
-    const vm = new NodeVM({
-      console: "inherit",
-      sandbox: {},
-      require: {
-        external: true,
-        builtin: ["*"],
-        root: path.dirname(filePath),
-      },
-    });
     let plugin;
     try {
-      plugin = vm.require(filePath);
-    } catch (vmErr) {
-      if (vmErr.message && vmErr.message.includes("ES Module")) {
-        // 使用动态 import 加载 ES Module 插件
-        const fileUrl = pathToFileURL(filePath).href;
-        plugin = await import(fileUrl);
-      } else {
-        log.error(
-          i18next.t("log.plugin_load_failed", {
-            pluginName,
-            error: vmErr.message,
-          })
-        );
-        return;
-      }
+      const fileUrl = pathToFileURL(filePath).href;
+      plugin = await import(fileUrl);
+    } catch (importErr) {
+      log.error(
+        i18next.t("log.plugin_load_failed", {
+          pluginName,
+          error: importErr.message,
+        })
+      );
+      return;
     }
     log.debug(i18next.t("log.plugin_loading", { pluginName }));
 
