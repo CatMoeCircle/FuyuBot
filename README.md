@@ -1,7 +1,7 @@
 **FuyuBot**
 ---
 
-English | [简体中文](./docs/README_zh-CN.md)
+English | [简体中文](./docs/README_zh-CN.md) | [Русский](./docs/README_ru.md)
 
 ---
 
@@ -32,7 +32,7 @@ For Termux, please refer to the [Termux Deployment Guide](#termux)
 
 2. Create a Telegram Bot with [@BotFather](https://t.me/BotFather) to get the Bot Token.
 
-3. Install [Node.js](https://nodejs.org/) version 18.20.6 or higher.
+3. Install [Node.js](https://nodejs.org/) version 18 or higher.
 
 ### Clone the Project
 
@@ -54,11 +54,20 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
 
 ### Start
 
-#### Windows and Linux
+You can also use `pnpm` instead of `npm`.
+
+#### **Windows**
    ```bash
    npm i
    npm run start
    ```
+#### **Linux**
+On Linux systems, you may need to complete the environment for `puppeteer`. Please refer to the following link for detailed troubleshooting steps: https://pptr.dev/troubleshooting#chrome-doesnt-launch-on-linux
+
+```bash
+npm i
+npm run start
+```
 
 #### **Termux**
 Use the installation script for a quick setup. The script will automatically configure the environment. You just need to clone the project, install the dependencies, and start the service.

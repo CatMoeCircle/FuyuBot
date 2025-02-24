@@ -139,3 +139,6 @@ dist
 
 # Plugin directory
 /plugins
+
+# Database files
+*.de

@@ -32,7 +32,7 @@ Termux请看 [Termux 部署指南](#termux)
 
 2. [@BotFather](https://t.me/BotFather) 创建一个 Telegram Bot，获得 Bot Token。
 
-3. 安装 [Node.js](https://nodejs.org/) 18.20.6 或更高版本。
+3. 安装 [Node.js](https://nodejs.org/) v18 或更高版本。
 
 ### 克隆项目
 
@@ -55,13 +55,20 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
 
 ### 启动
 
-#### Windows和Linux
+#### **Windows**
    ```bash
    npm i
-   npm run test
+   npm run start
    ```
+#### **Linux**
+在 Linux 系统下，您可能需要为 `puppeteer` 补全环境。请参考以下链接获取详细的故障排除步骤：https://pptr.dev/troubleshooting#chrome-doesnt-launch-on-linux
 
-#### Termux
+```bash
+npm i
+npm run start
+```
+
+#### **Termux**
 使用安装脚本快速安装，脚本会自动配置环境，你只需要克隆项目，然后安装依赖包并启动。
 
 ```bash
@@ -94,7 +101,7 @@ cd shiny-journey-bot
 npm i
 
 # 启动服务
-npm run Test
+npm run start
 ```
 ---
 
