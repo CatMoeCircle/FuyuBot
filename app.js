@@ -1,6 +1,5 @@
 import loadConfig from "./core/config.js";
 import start from "./core/bot.js";
-import "./WebUI/web.js";
 import log from "#logger";
 import initI18n from "#i18next";
 
