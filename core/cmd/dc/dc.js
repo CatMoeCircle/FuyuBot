@@ -206,10 +206,10 @@ export async function dc(client, event) {
       const outputPath = path.join(
         process.cwd(),
         "caching",
-        `dc_${randomHash}.png`
+        `dc_${randomHash}.jpg`
       );
       const out = fs.createWriteStream(outputPath);
-      const stream = canvas.createPNGStream();
+      const stream = canvas.createJPEGStream({ quality: 0.95 });
       stream.pipe(out);
       out.on("finish", async () => {
         try {
