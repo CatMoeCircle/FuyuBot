@@ -1,7 +1,7 @@
 # FuyuBot
 ---  
 
-[English](../README.md) | Английский | [简体中文](./README_zh-CN.md)  
+[English](../README.md) | [简体中文](./README_zh-CN.md) | Русский
 
 ---  
 
@@ -17,9 +17,9 @@
 | Windows   | ✔      |
 | Termux (Android) | ✔ |
 | Linux     | ✔      |
-| MacOS     | ❓ (Не тестировалось) |
+| MacOS     | ? (Не тестировалось) |
 
-Для macOS необходима дополнительная проверка, так как у нас нет соответствующего оборудования. Если возникнут проблемы, создайте Issue.
+Для macOS, хотя у нас в настоящее время нет оборудования для тестирования, теоретически всё должно работать. Если вы столкнетесь с какими-либо проблемами, пожалуйста, создайте Issue.
 
 Для Termux ознакомьтесь с [руководством по развертыванию Termux](#termux).
 
@@ -55,16 +55,7 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
 
 Можно использовать `pnpm` вместо `npm`.
 
-#### **Windows**
-```bash
-npm i
-npm run start
-```
-
-#### **Linux**
-
-Для Linux может потребоваться дополнительная настройка для `puppeteer`: https://pptr.dev/troubleshooting#chrome-doesnt-launch-on-linux
-
+#### **Windows и Linux**
 ```bash
 npm i
 npm run start
@@ -76,6 +67,11 @@ npm run start
 
 ```bash
 bash <(curl -sL https://github.com/CatMoeCircle/FuyuBot/raw/main/scripts/termux.sh)
+
+# Перейдите к разделу настройки API выше
+
+npm i
+npm run start
 ```
 
 Или установка вручную:
@@ -85,9 +81,8 @@ bash <(curl -sL https://github.com/CatMoeCircle/FuyuBot/raw/main/scripts/termux.
 pkg update && pkg upgrade
 
 # Установка необходимых пакетов
-pkg install x11-repo tur-repo
-pkg install chromium-browser
-pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
+pkg install nodejs 
+pkg install python3 setuptools binutils binutils-is-llvm git
 
 # Скачать Android NDK для Termux: https://github.com/lzhiyong/termux-ndk
 curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
@@ -111,4 +106,7 @@ npm run start
 
 # Контакты и участие
 
-Если вы обнаружили ошибки или у вас есть предложения по улучшению, создайте Issue или Pull Request. Присоединяйтесь к группе для обсуждения. Вместе сделаем **FuyuBot** лучше!
+Если вы обнаружили ошибки или у вас есть предложения по улучшению, создайте Issue или Pull Request. Присоединяйтесь к группе для обсуждения.  
+[@CatMoeCircle_Group](https://t.me/CatMoeCircle_Group)
+Вместе сделаем **FuyuBot** лучше!
+

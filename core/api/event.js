@@ -16,27 +16,6 @@ export const eventupdate = new EventEmitter();
 
 export const event = async (client) => {
   client.addEventHandler(async (event) => {
-    // 获取发送者ID
-    const sendid =
-      Number(
-        event?.message?.peerId?.userId?.value ||
-          event?.message?.fromId?.userId?.value ||
-          event?.message?.fromId?.channelId?.value
-      ) || null;
-
-    // 获取发送者类型
-    const sendtype =
-      event?.message?.fromId?.className ||
-      (event?.message?.peerId?.className === "PeerUser"
-        ? event.message.peerId.className
-        : null);
-
-    if (sendid) {
-      console.log("发送者ID:", sendid);
-      console.log("发送者类型:", sendtype);
-    }
-
-    // 发送AllNewMessage事件
     eventupdate.emit("AllNewMessage", event);
 
     const { message: text } = event.message;

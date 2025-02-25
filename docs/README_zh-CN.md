@@ -1,7 +1,7 @@
 **FuyuBot**
 ---
 
-[English](../README.md) | 简体中文
+[English](../README.md) | 简体中文 | [Русский](../README_ru.md)
 
 
 ---
@@ -17,9 +17,9 @@
 | Windows  | ✔  |
 | Termux(Android)  | ✔  |
 | Linux   | ✔  |
-| MacOS    | ?(未测试)|
+| MacOS    | ? (未测试) |
 
-关于MacOS，我们没有设备进行测试如果有问题请提Issue
+由于我们目前没有 macOS 设备进行测试，理论上应该可以运行。如果您在使用过程中遇到任何问题，请提交 Issue。
 Termux请看 [Termux 部署指南](#termux)
 
 ---
@@ -55,24 +55,23 @@ BOT_TOKEN=123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ # Telegram Bot Token
 
 ### 启动
 
-#### **Windows**
+你也可以使用 `pnpm` 代替 `npm`。
+
+#### **Windows和Linux**
    ```bash
    npm i
    npm run start
    ```
-#### **Linux**
-在 Linux 系统下，您可能需要为 `puppeteer` 补全环境。请参考以下链接获取详细的故障排除步骤：https://pptr.dev/troubleshooting#chrome-doesnt-launch-on-linux
-
-```bash
-npm i
-npm run start
-```
 
 #### **Termux**
-使用安装脚本快速安装，脚本会自动配置环境，你只需要克隆项目，然后安装依赖包并启动。
-
+使用安装脚本快速安装，脚本会自动配置环境。
 ```bash
 bash <(curl -sL https://github.com/CatMoeCircle/FuyuBot/raw/main/scripts/termux.sh)
+
+# 跳到上方的配置API
+
+npm i
+npm run start
 ```
 
 或者手动安装
@@ -82,9 +81,8 @@ bash <(curl -sL https://github.com/CatMoeCircle/FuyuBot/raw/main/scripts/termux.
 pkg update && pkg upgrade
 
 # 安装需要的软件包
-pkg install x11-repo tur-repo
-pkg install chromium-browser
-pkg install nodejs python3 setuptools binutils binutils-is-llvm git which
+pkg install nodejs 
+pkg install python3 setuptools binutils binutils-is-llvm git
 
 # 下载termux的Android NDK https://github.com/lzhiyong/termux-ndk
 curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
@@ -99,7 +97,6 @@ cd shiny-journey-bot
 
 # 安装依赖包
 npm i
-
 # 启动服务
 npm run start
 ```
@@ -108,6 +105,7 @@ npm run start
 # 联系与参与贡献
 
 如果在使用过程中有任何问题或改进建议，欢迎提交 Issue 或 Pull Requests，加入我们的群组进行讨论。  
+[@CatMoeCircle_Group](https://t.me/CatMoeCircle_Group)
 一起让 **FuyuBot** 更加完善！
 
 
