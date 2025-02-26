@@ -80,8 +80,8 @@ pkg update && pkg upgrade
 # Install required packages
 pkg install x11-repo tur-repo
 pkg install nodejs 
-pkg install python3 setuptools binutils binutils-is-llvm git
-
+pkg install python3 binutils binutils-is-llvm git
+pip install setuptools
 # Download Termux's Android NDK https://github.com/lzhiyong/termux-ndk
 curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip --output android-ndk-r27b-aarch64.zip
 unzip android-ndk-r27b-aarch64.zip
