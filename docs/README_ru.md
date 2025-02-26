@@ -81,11 +81,12 @@ npm run start
 pkg update && pkg upgrade
 
 # Установка необходимых пакетов
+pkg install x11-repo tur-repo
 pkg install nodejs 
 pkg install python3 setuptools binutils binutils-is-llvm git
 
 # Скачать Android NDK для Termux: https://github.com/lzhiyong/termux-ndk
-curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
+curl -L https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip --output android-ndk-r27b-aarch64.zip
 unzip android-ndk-r27b-aarch64.zip
 
 # Настройка переменных окружения для NDK
