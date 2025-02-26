@@ -1,11 +1,89 @@
 import log from "#logger";
 import fs from "fs";
-import { createCanvas, loadImage } from "canvas";
+import { createCanvas, loadImage, GlobalFonts } from "@napi-rs/canvas";
 import path from "path";
 import { fileURLToPath } from "url";
+import os from "os";
+import { execSync } from "child_process";
+import enquirer from "enquirer";
+import initI18n from "#i18next";
+
+const i18n = await initI18n();
+const { prompt } = enquirer;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function checkUnzip() {
+  try {
+    execSync("unzip -v", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const platform = os.platform();
+let fontPath;
+if (platform === "win32") {
+  fontPath = "Microsoft YaHei";
+} else if (platform === "darwin") {
+  fontPath = "PingFang SC";
+} else {
+  const fontDir = path.join(__dirname, "fonts");
+  const fontZip = path.join(fontDir, "MapleMonoNL-NF-CN-unhinted.zip");
+  const fontFile = path.join(fontDir, "MapleMonoNL-NF-CN-Medium.ttf");
+
+  if (!fs.existsSync(fontFile)) {
+    if (!fs.existsSync(fontDir)) {
+      fs.mkdirSync(fontDir);
+    }
+
+    const response = await prompt({
+      type: "confirm",
+      name: "downloadFont",
+      message: i18n.t("log.dc_font_missing"),
+      initial: true,
+    }).catch(() => ({ downloadFont: false }));
+
+    if (response.downloadFont) {
+      // 检查unzip是否安装
+      if (!checkUnzip()) {
+        log.info(i18n.t("log.dc_unzip_missing"));
+        if (platform === "android") {
+          log.info("pkg install unzip");
+        } else {
+          log.info(i18n.t("log.dc_unzip_install"));
+        }
+        log.info(i18n.t("log.dc_install_complete"));
+        process.exit(1);
+      }
+
+      log.info(i18n.t("log.dc_downloading_font"));
+      execSync(
+        `curl -L -o ${fontZip} https://github.com/subframe7536/maple-font/releases/download/v7.0-beta36/MapleMonoNL-NF-CN-unhinted.zip`
+      );
+      log.info(i18n.t("log.dc_font_extracting"));
+      execSync(`unzip ${fontZip} -d ${fontDir}`);
+      fs.unlinkSync(fontZip);
+      fs.readdirSync(fontDir).forEach((file) => {
+        if (file !== "MapleMonoNL-NF-CN-Medium.ttf") {
+          fs.unlinkSync(path.join(fontDir, file));
+        }
+      });
+      log.info(i18n.t("log.dc_font_installed"));
+      // 使用 GlobalFonts 注册字体
+      GlobalFonts.registerFromPath(fontFile, "MapleFont");
+      fontPath = "MapleFont";
+    } else {
+      log.info(i18n.t("log.dc_font_skipped"));
+      fontPath = "sans-serif";
+    }
+  } else {
+    GlobalFonts.registerFromPath(fontFile, "MapleFont");
+    fontPath = "MapleFont";
+  }
+}
 
 export async function dc(client, event) {
   const message = event.message;
@@ -22,11 +100,13 @@ export async function dc(client, event) {
       const photo = await client.downloadProfilePhoto(UserInfo);
       avatarBase64 = `data:image/jpeg;base64,${photo.toString("base64")}`;
     } catch (downloadError) {
-      log.error(`无法下载头像: ${downloadError}`);
+      log.error(
+        i18n.t("log.dc_avatar_download_failed", { error: downloadError })
+      );
       avatarBase64 = null;
     }
   } else {
-    log.info("用户没有头像");
+    log.info(i18n.t("log.dc_no_avatar"));
     avatarBase64 = `https://dummyimage.com/80x80/cccccc/ffffff&text=${UserInfo.firstName.charAt(
       0
     )}`;
@@ -167,50 +247,50 @@ export async function dc(client, event) {
       );
       ctx.restore();
 
-      // 绘制文字（用户信息）
       ctx.fillStyle = "black";
-      ctx.font = "bold 90px";
+      ctx.font = `bold 90px ${fontPath}`;
       ctx.fillText(`${userFullName}`, 100, 740);
       ctx.fillStyle = "#666666";
-      ctx.font = "65px";
+      ctx.font = `65px ${fontPath}`;
       ctx.fillText(`@${userName}`, 100, 810);
       ctx.fillText(`ID:${ID} - DC:${dcId}`, 100, 960);
-      ctx.font = "bold 35px";
+      ctx.font = `bold 35px ${fontPath}`;
       ctx.fillText("如果DC为空请检查头像是否设置或公开显示", 95, 1068);
-      // 添加半透明图片
-      loadImage(path.join(__dirname, "./img/3.png")).then((watermark) => {
-        ctx.save();
-        ctx.globalAlpha = 0.5; // 设置透明度为0.2
-        const wmSize = 637;
-        ctx.drawImage(watermark, 960, 500, wmSize, wmSize);
-        ctx.restore();
 
-        ctx.save();
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 4;
-        ctx.strokeText(
-          `FuyuBot - v${process.env.npm_package_version}`,
-          1210,
-          1068
-        );
-        ctx.fillText(
-          `FuyuBot - v${process.env.npm_package_version}`,
-          1210,
-          1068
-        );
-        ctx.restore();
-      });
+      return loadImage(path.join(__dirname, "./img/3.png"));
+    })
+    .then((watermark) => {
+      ctx.save();
+      ctx.globalAlpha = 0.5; // 设置透明度为0.2
+      const wmSize = 637;
+      ctx.drawImage(watermark, 960, 500, wmSize, wmSize);
+      ctx.restore();
+
+      ctx.save();
+      ctx.strokeStyle = "white";
+      ctx.lineWidth = 4;
+      ctx.strokeText(
+        `FuyuBot - v${process.env.npm_package_version}`,
+        1210,
+        1068
+      );
+      ctx.fillText(`FuyuBot - v${process.env.npm_package_version}`, 1210, 1068);
+      ctx.restore();
 
       // 保存图片到运行目录的 caching 文件夹，并添加随机哈希后缀
       const randomHash = Math.random().toString(36).substring(2, 8);
-      const outputPath = path.join(
-        process.cwd(),
-        "caching",
-        `dc_${randomHash}.jpg`
-      );
+      const cachingDir = path.join(process.cwd(), "caching");
+
+      // 确保 caching 目录存在
+      if (!fs.existsSync(cachingDir)) {
+        fs.mkdirSync(cachingDir, { recursive: true });
+      }
+
+      const outputPath = path.join(cachingDir, `dc_${randomHash}.jpg`);
       const out = fs.createWriteStream(outputPath);
-      const stream = canvas.createJPEGStream({ quality: 0.95 });
-      stream.pipe(out);
+      const buffer = canvas.toBuffer("image/jpeg", { quality: 0.95 });
+      out.write(buffer);
+      out.end();
       out.on("finish", async () => {
         try {
           if (message.peerId?.className === "PeerUser") {
@@ -237,6 +317,6 @@ export async function dc(client, event) {
       });
     })
     .catch((err) => {
-      console.error("加载图片失败", err);
+      console.error(i18n.t("log.dc_load_failed"), err);
     });
 }

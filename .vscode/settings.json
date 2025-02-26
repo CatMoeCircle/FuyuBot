@@ -10,5 +10,6 @@
     "i18n-ally.localesPaths": [
       "core/lang"
     ],
+    "i18n-ally.keystyle": "nested",
   }
   

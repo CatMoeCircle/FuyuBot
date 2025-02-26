@@ -21,7 +21,7 @@
   "homepage": "https://github.com/CatMoeCircle/FuyuBot#readme",
   "dependencies": {
     "better-sqlite3": "^11.8.1",
-    "canvas": "^3.1.0",
+    "@napi-rs/canvas": "^0.1.67",
     "dotenv": "^16.4.7",
     "enquirer": "^2.4.1",
     "i18next": "^24.2.2",
@@ -43,7 +43,7 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "canvas"
+      "better-sqlite3"
     ]
   }
 }
