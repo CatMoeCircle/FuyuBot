@@ -6,8 +6,6 @@ import initI18n from "#i18next";
 (async () => {
   const i18next = await initI18n();
   try {
-    log.info(i18next.t("log.config_generating"));
-
     const load = await loadConfig();
     if (load === true) {
       const retryInterval = 5000;

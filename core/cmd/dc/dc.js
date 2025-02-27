@@ -1,89 +1,16 @@
 import log from "#logger";
 import fs from "fs";
-import { createCanvas, loadImage, GlobalFonts } from "@napi-rs/canvas";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 import path from "path";
 import { fileURLToPath } from "url";
-import os from "os";
-import { execSync } from "child_process";
-import enquirer from "enquirer";
 import initI18n from "#i18next";
+import { ensureFontLoaded } from "../../../core/config.js";
 
 const i18n = await initI18n();
-const { prompt } = enquirer;
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function checkUnzip() {
-  try {
-    execSync("unzip -v", { stdio: "ignore" });
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-const platform = os.platform();
-let fontPath;
-if (platform === "win32") {
-  fontPath = "Microsoft YaHei";
-} else if (platform === "darwin") {
-  fontPath = "PingFang SC";
-} else {
-  const fontDir = path.join(__dirname, "fonts");
-  const fontZip = path.join(fontDir, "MapleMonoNL-NF-CN-unhinted.zip");
-  const fontFile = path.join(fontDir, "MapleMonoNL-NF-CN-Medium.ttf");
-
-  if (!fs.existsSync(fontFile)) {
-    if (!fs.existsSync(fontDir)) {
-      fs.mkdirSync(fontDir);
-    }
-
-    const response = await prompt({
-      type: "confirm",
-      name: "downloadFont",
-      message: i18n.t("log.dc_font_missing"),
-      initial: true,
-    }).catch(() => ({ downloadFont: false }));
-
-    if (response.downloadFont) {
-      // 检查unzip是否安装
-      if (!checkUnzip()) {
-        log.info(i18n.t("log.dc_unzip_missing"));
-        if (platform === "android") {
-          log.info("pkg install unzip");
-        } else {
-          log.info(i18n.t("log.dc_unzip_install"));
-        }
-        log.info(i18n.t("log.dc_install_complete"));
-        process.exit(1);
-      }
-
-      log.info(i18n.t("log.dc_downloading_font"));
-      execSync(
-        `curl -L -o ${fontZip} https://github.com/subframe7536/maple-font/releases/download/v7.0-beta36/MapleMonoNL-NF-CN-unhinted.zip`
-      );
-      log.info(i18n.t("log.dc_font_extracting"));
-      execSync(`unzip ${fontZip} -d ${fontDir}`);
-      fs.unlinkSync(fontZip);
-      fs.readdirSync(fontDir).forEach((file) => {
-        if (file !== "MapleMonoNL-NF-CN-Medium.ttf") {
-          fs.unlinkSync(path.join(fontDir, file));
-        }
-      });
-      log.info(i18n.t("log.dc_font_installed"));
-      // 使用 GlobalFonts 注册字体
-      GlobalFonts.registerFromPath(fontFile, "MapleFont");
-      fontPath = "MapleFont";
-    } else {
-      log.info(i18n.t("log.dc_font_skipped"));
-      fontPath = "sans-serif";
-    }
-  } else {
-    GlobalFonts.registerFromPath(fontFile, "MapleFont");
-    fontPath = "MapleFont";
-  }
-}
+const fontPath = await ensureFontLoaded();
 
 export async function dc(client, event) {
   const message = event.message;
@@ -130,7 +57,7 @@ export async function dc(client, event) {
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, 1600, 1140);
 
-  const imgDir = path.join(__dirname, "img");
+  const imgDir = path.join(__dirname, "../../../resources/images");
   const imgFiles = fs
     .readdirSync(imgDir)
     .filter((file) => file !== "3.png" && /\.(png|jpe?g)$/i.test(file));
@@ -257,7 +184,7 @@ export async function dc(client, event) {
       ctx.font = `bold 35px ${fontPath}`;
       ctx.fillText("如果DC为空请检查头像是否设置或公开显示", 95, 1068);
 
-      return loadImage(path.join(__dirname, "./img/3.png"));
+      return loadImage(path.join(__dirname, "../../../resources/images/3.png"));
     })
     .then((watermark) => {
       ctx.save();
