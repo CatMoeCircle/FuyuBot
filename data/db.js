@@ -44,3 +44,63 @@ export function initDatabase() {
   }
   return true;
 }
+
+export function createUser(userId, language = "zh-cn", customSettings = "{}") {
+  try {
+    const db = new Database(dbPath);
+    const stmt = db.prepare(`
+      INSERT INTO user_data (user_id, language, custom_settings)
+      VALUES (?, ?, ?)
+    `);
+
+    const result = stmt.run(userId, language, customSettings);
+    db.close();
+    return result.changes > 0;
+  } catch (err) {
+    console.error("创建用户失败:", err);
+    return false;
+  }
+}
+
+export function updateUser(userId, data) {
+  try {
+    const db = new Database(dbPath);
+    const updates = [];
+    const params = [];
+
+    if (data.language) {
+      updates.push("language = ?");
+      params.push(data.language);
+    }
+
+    if (data.customSettings) {
+      updates.push("custom_settings = ?");
+      params.push(
+        typeof data.customSettings === "string"
+          ? data.customSettings
+          : JSON.stringify(data.customSettings)
+      );
+    }
+
+    if (updates.length === 0) {
+      db.close();
+      return false;
+    }
+
+    updates.push("updated_at = CURRENT_TIMESTAMP");
+    params.push(userId);
+
+    const stmt = db.prepare(`
+      UPDATE user_data 
+      SET ${updates.join(", ")}
+      WHERE user_id = ?
+    `);
+
+    const result = stmt.run(...params);
+    db.close();
+    return result.changes > 0;
+  } catch (err) {
+    console.error("更新用户数据失败:", err);
+    return false;
+  }
+}
