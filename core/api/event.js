@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import { EditedMessage } from "telegram/events/EditedMessage.js";
 import { DeletedMessage } from "telegram/events/DeletedMessage.js";
+import { CallbackQuery } from "telegram/events/CallbackQuery.js";
 import { Album } from "telegram/events/Album.js";
 import { NewMessage } from "telegram/events/index.js";
 
@@ -11,6 +12,7 @@ import { NewMessage } from "telegram/events/index.js";
  * @event EditedMessage - Emitted for edited messages
  * @event DeletedMessage - Emitted for deleted messages
  * @event Album - Emitted for album messages
+ * @event CallbackQuery - Emitted for callback queries
  */
 export const eventupdate = new EventEmitter();
 
@@ -43,4 +45,7 @@ export const event = async (client) => {
   client.addEventHandler(async (event) => {
     eventupdate.emit("Album", event);
   }, new Album({}));
+  client.addEventHandler(async (event) => {
+    eventupdate.emit("CallbackQuery", event);
+  }, new CallbackQuery({}));
 };
