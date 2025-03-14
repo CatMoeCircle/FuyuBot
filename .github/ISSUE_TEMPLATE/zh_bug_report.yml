@@ -1,0 +1,58 @@
+name: "问题反馈"
+description: "提交问题反馈"
+title: "[BUG] "
+labels: ["bug", "triage"]
+projects: ["fuyubot/1", "fuyubot/triage"]
+assignees: []
+
+body:
+  - type: dropdown
+    id: os
+    attributes:
+      label: "操作系统"
+      description: "请选择操作系统类型"
+      options:
+        - Android
+        - Windows
+        - macOS
+        - Linux
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: "系统版本"
+      description: "请提供系统版本号"
+    validations:
+      required: true
+  - type: input
+    id: android-terminal
+    attributes:
+      label: "如果系统为安卓"
+      description: "请提供运行终端的名称和版本（例如：Termux 0.101）"
+    validations:
+      required: false
+  - type: input
+    id: nodejs-version
+    attributes:
+      label: "Node.js"
+      description: "请提供 Node.js 版本号"
+    validations:
+      required: true
+  - type: input
+    id: fuyubot-version
+    attributes:
+      label: "FuyuBot"
+      description: "请提供 FuyuBot 版本号（可通过 package.json 中的 version 字段获取）"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "问题详情"
+      description: "描述发生的问题及预期行为"
+      placeholder: "请详细描述问题，包括复现步骤、错误日志等"
+      value: "bug"
+    validations:
+      required: true

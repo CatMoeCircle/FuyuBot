@@ -1,0 +1,58 @@
+name: "Bug Report"
+description: "Submit a bug report"
+title: "[BUG] "
+labels: ["bug", "triage"]
+projects: ["fuyubot/1", "fuyubot/triage"]
+assignees: []
+
+body:
+  - type: dropdown
+    id: os
+    attributes:
+      label: "Operating System"
+      description: "Please select the operating system"
+      options:
+        - Android
+        - Windows
+        - macOS
+        - Linux
+        - Others
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: "OS Version"
+      description: "Please provide the operating system version"
+    validations:
+      required: true
+  - type: input
+    id: android-terminal
+    attributes:
+      label: "Android Terminal"
+      description: "If using Android, please provide the terminal name and version (e.g., Termux 0.101)"
+    validations:
+      required: false
+  - type: input
+    id: nodejs-version
+    attributes:
+      label: "Node.js"
+      description: "Please provide the Node.js version"
+    validations:
+      required: true
+  - type: input
+    id: fuyubot-version
+    attributes:
+      label: "FuyuBot"
+      description: "Please provide the FuyuBot version (refer to the version field in package.json)"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "What happened"
+      description: "Describe the issue and expected behavior"
+      placeholder: "Please detail the issue, including reproduction steps, error logs, etc."
+      value: "bug"
+    validations:
+      required: true

@@ -1,0 +1,49 @@
+{
+  "name": "fuyubot",
+  "version": "1.2.2",
+  "description": "telegram bot",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CatMoeCircle/FuyuBot.git"
+  },
+  "author": "xiaoqvan",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/CatMoeCircle/FuyuBot/issues"
+  },
+  "homepage": "https://github.com/CatMoeCircle/FuyuBot#readme",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "@napi-rs/canvas": "^0.1.67",
+    "dotenv": "^16.4.7",
+    "enquirer": "^2.4.1",
+    "i18next": "^24.2.2",
+    "i18next-fs-backend": "^2.6.0",
+    "js-yaml": "^4.1.0",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "telegram": "^2.26.22"
+  },
+  "imports": {
+    "#logger": "./core/log.js",
+    "#i18next": "./core/i18n.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0",
+    "nodemon": "^3.1.9"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
+  }
+}
