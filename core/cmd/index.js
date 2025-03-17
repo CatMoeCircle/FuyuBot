@@ -1,6 +1,6 @@
 import { Start } from "./start.js";
 import { dc } from "./dc/dc.js";
-import { plugin } from "./plugins/add.js";
+import { plugin } from "./plugins/index.js";
 import { eventupdate } from "../api/event.js";
 
 const commandHandlers = {

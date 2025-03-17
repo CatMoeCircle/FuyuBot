@@ -164,7 +164,7 @@ export async function addPlugin(gitUrl) {
         const config = yaml.load(fs.readFileSync(configPath, "utf8")) || {};
         config[repoName] = true;
         fs.writeFileSync(configPath, yaml.dump(config), "utf8");
-        resolve("插件下载成功并已启用");
+        resolve("插件下载成功并开启，需要重启机器人以生效。");
       }
     });
   });
@@ -189,7 +189,9 @@ export async function toggleSwitch(pluginName, enable, client, i18next) {
       await loadPlugin(pluginDir, client, i18next);
     }
 
-    return `插件 '${pluginName}' 已被${enable ? "启用" : "禁用"}`;
+    return `插件 '${pluginName}' 已被${
+      enable ? "启用" : "禁用"
+    }，请重启机器人以生效。`;
   } catch (error) {
     console.error("更新插件配置时出错:", error);
     throw new Error("无法更新插件配置");

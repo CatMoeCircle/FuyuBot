@@ -116,7 +116,12 @@ export async function plugin(client, event) {
           } else {
             await client.sendMessage(message.chatId, {
               replyTo: message.id,
-              message: "未知的插件命令。",
+              message: `插件命令使用方法:
+            /plugins list - 显示已安装的插件列表
+            /plugins add <GitHub链接> - 添加新插件
+            /plugins delete <插件名称> - 删除指定插件
+            /plugins reload - 重新加载所有插件
+            /plugins <插件名称> <true/false> - 启用/禁用指定插件`,
             });
           }
       }
