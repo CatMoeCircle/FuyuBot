@@ -5,6 +5,7 @@ import path from "path";
 import yaml from "js-yaml";
 import fs from "fs";
 import enquirer from "enquirer";
+import log from "#logger";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +21,9 @@ const initI18n = async () => {
 
   if (!fs.existsSync(configPath)) {
     const { prompt } = enquirer;
+    log.info(
+      "If your characters appear garbled, please check if your terminal is set to UTF-8."
+    );
     const response = await prompt({
       type: "select",
       name: "language",
@@ -40,7 +44,7 @@ const initI18n = async () => {
     config = yaml.load(fs.readFileSync(configPath, "utf8")) || {};
   }
 
-  const userLanguage = config.language || "zh-cn";
+  const userLanguage = config.language || "en-us";
 
   await i18next.use(Backend).init({
     // debug: true,

@@ -1,24 +1,24 @@
 import { Api } from "telegram";
 
-export function sendMessage(client, chatId, sendMessageParams) {
-  client.sendMessage(chatId, sendMessageParams);
+export async function sendMessage(client, chatId, sendMessageParams) {
+  await client.sendMessage(chatId, sendMessageParams);
 }
-export function replyToMessage(client, chatId, magid, sendMessageParams) {
-  client.sendMessage(chatId, {
+export async function replyToMessage(client, chatId, magid, sendMessageParams) {
+  await client.sendMessage(chatId, {
     replyTo: magid,
     ...sendMessageParams,
   });
 }
-export function editMessage(client, chatId, magid, editMessageParams) {
-  client.editMessage(chatId, {
+export async function editMessage(client, chatId, magid, editMessageParams) {
+  await client.editMessage(chatId, {
     message: magid,
     ...editMessageParams,
   });
 }
-export function replyToCmd(client, chatId, message, editMessageParams) {
+export async function replyToCmd(client, chatId, message, editMessageParams) {
   try {
     if (message.peerId?.className === "PeerUser") {
-      client.sendMessage(chatId, {
+      await client.sendMessage(chatId, {
         editMessageParams,
       });
     } else {
