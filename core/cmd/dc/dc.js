@@ -34,11 +34,45 @@ export async function dc(client, event) {
     }
   } else {
     log.info(i18n.t("log.dc_no_avatar"));
-    avatarBase64 = `https://dummyimage.com/80x80/cccccc/ffffff&text=${UserInfo.firstName.charAt(
-      0
-    )}`;
+    // 自己生成橙色背景 + 首字母头像
+    let firstChar = "";
+
+    // 获取有效字符，忽略特殊符号和空格
+    if (UserInfo.firstName) {
+      for (const char of UserInfo.firstName) {
+        // 只保留字母、数字和中日韩文字
+        if (/^[\p{L}\p{N}\p{Ideographic}]+$/u.test(char)) {
+          firstChar = char;
+          break;
+        }
+      }
+    }
+
+    // 如果没有找到有效字符，使用默认"?"
+    if (!firstChar) {
+      firstChar = "?";
+    }
+
+    const avatarCanvas = createCanvas(500, 500);
+    const avatarCtx = avatarCanvas.getContext("2d");
+
+    // 绘制橙色背景
+    avatarCtx.fillStyle = "#ff9900";
+    avatarCtx.fillRect(0, 0, 500, 500);
+
+    // 绘制白色文字，调整大小
+    avatarCtx.fillStyle = "#ffffff";
+    avatarCtx.font = `bold 180px ${fontPath}`;
+    avatarCtx.textAlign = "center";
+    avatarCtx.textBaseline = "middle";
+    avatarCtx.fillText(firstChar, 250, 250);
+
+    // 转换为base64
+    avatarBase64 = avatarCanvas.toDataURL("image/png");
   }
-  const dcId = UserInfo.photo.dcId || null;
+
+  // 安全获取dcId，检查UserInfo.photo是否存在
+  const dcId = UserInfo.photo?.dcId || null;
   const ID = UserInfo.id.value.toString();
   const userName = UserInfo.username || "null";
   const userFullName =

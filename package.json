@@ -1,6 +1,6 @@
 {
   "name": "fuyubot",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "telegram bot",
   "type": "module",
   "main": "app.js",
